@@ -4,10 +4,11 @@ Sources: `design/logo-sheet.png` (logo, palette) and `design/app-screens-referen
 
 ## 1. Brand
 
-- Logo mark: three rounded squares and a leaf in a 2×2 grid (a routine grid that grows). Wordmark "NFE Schedule": **NFE** bold, **Schedule** regular, Space Grotesk.
-- Palette: Ink `#14321F`, Leaf `#2FA35A`, Ground `#F3F6F1`; app icon leaf `#5FD18A`.
-- Lockups: horizontal (mark + wordmark + "Class routine · NFE Department, DIU"), mark only (favicon, small sizes), reversed on Ink.
-- Export from the sheet (or redraw as SVG in `packages/ui/assets/`): app icon 1024 px (mark on Ink, rounded square), Android adaptive icon (foreground mark, background Ink), splash (mark on Ink), favicon 32/180/512, PWA maskable icon. The admin's `branding.logo_path` only replaces the in-app header logo, not the installed icon.
+- **One logo, everywhere:** the app icon design from the logo sheet — an Ink `#14321F` rounded square holding three light Ground `#F3F6F1` squares and a green leaf `#5FD18A` in a 2×2 grid (a routine grid that grows). There are no other variants: no horizontal lockup, no reversed or mark-only version.
+- Source: `LOGO_SVG` in `packages/ui/src/logo.ts`, written to `packages/ui/assets/logo.svg` by `pnpm --filter @nfe/ui build:assets`. The same command builds the app icon (logo on Ink, opaque), Android adaptive icon (logo in the safe zone, background Ink), splash (logo on Ink), favicon (`apps/web/app/icon.svg`), Apple touch icon and PWA icons (including maskable).
+- In the apps: `<Logo size={...} />` from `@nfe/ui/web` or `@nfe/ui/native` — sign-in, admin top bar, splash, gallery, everywhere. When the app name is needed next to it ("NFE Schedule"), it is ordinary text beside the logo, not part of it.
+- Admin logo (`branding.logo_path`): replaces this one logo in the apps. Web: `logoOverrideStyle(url)` on `<html>` sets `--nfe-logo-image`; mobile: `<UiProvider logoUrl={url}>`. The installed app icon, splash and favicon stay the built-in logo (they need a new build).
+- Palette: Ink `#14321F`, Leaf `#2FA35A`, Ground `#F3F6F1`, logo leaf `#5FD18A`. Wordmark text uses Space Grotesk.
 
 ## 2. Themes
 
@@ -77,11 +78,11 @@ Contrast AA in both themes (check accent text on course colours); every icon but
 
 | Entry | Contents |
 |---|---|
-| `@nfe/ui` | `tokens`, `getTheme`, `courseTone`, `toneColors`, contrast helpers, logo geometry, icon names, gallery sample data |
+| `@nfe/ui` | `tokens`, `getTheme`, `courseTone`, `toneColors`, contrast helpers, `LOGO_SVG`, icon names, gallery sample data |
 | `@nfe/ui/theme.css` | Tailwind v4 theme generated from the tokens (`pnpm --filter @nfe/ui build:css`); colours are CSS variables, so `data-theme="dark"` / `"light"` switches them, otherwise the system decides |
 | `@nfe/ui/web` | React DOM components (Tailwind classes) |
 | `@nfe/ui/native` | React Native components, `UiProvider` (theme preference + locale), `Text` with the type scale (Hind Siliguri in Bangla), `FONT` names |
 
-Generated assets: `pnpm --filter @nfe/ui build:assets` draws the logo mark from `src/logo.ts` into `packages/ui/assets/*.svg`, the app icon, adaptive icon and splash (`apps/mobile/assets/`), and the favicon, Apple touch icon and PWA icons (`apps/web/app/`, `apps/web/public/icons/`).
+Generated assets: `pnpm --filter @nfe/ui build:assets` writes `packages/ui/assets/logo.svg` and every icon from `LOGO_SVG` (see §1).
 
 Galleries (development only): web `/dev/ui` (dark and light side by side), mobile `/dev/ui` (theme switch at the top).

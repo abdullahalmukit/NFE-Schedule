@@ -1,55 +1,43 @@
 /**
- * Logo mark geometry (design/logo-sheet.png): three rounded squares and a
- * leaf in a 2×2 grid, on a 100 × 100 view box. Used by the web and mobile
- * <Logo> components and by the icon generator, so every copy is identical.
+ * The one NFE Schedule logo: the app icon design from design/logo-sheet.png —
+ * an Ink rounded square holding three light squares and a green leaf in a
+ * 2×2 grid. Every copy (web <Logo>, mobile <Logo>, packages/ui/assets/logo.svg,
+ * app icon, adaptive icon, splash, favicon, PWA icons) is built from LOGO_SVG.
+ * The admin can replace it in the apps with `branding.logo_path`.
  */
 import { tokens } from "./tokens";
 
-export const LOGO_VIEWBOX = 100;
-
+/** Grid of the mark inside its own 100 × 100 box. */
 const CELL = 44;
 const GAP = 12;
 const R = 12;
 const FAR = CELL + GAP;
-
-export const LOGO_SQUARES = [
-  { x: 0, y: 0, size: CELL, r: R },
-  { x: 0, y: FAR, size: CELL, r: R },
-  { x: FAR, y: FAR, size: CELL, r: R },
+const SQUARES = [
+  [0, 0],
+  [0, FAR],
+  [FAR, FAR],
 ] as const;
-
 /** Leaf in the top-right cell: a lens from its bottom-left to its top-right corner. */
-export const LOGO_LEAF_PATH = `M${FAR} ${CELL}A${CELL} ${CELL} 0 0 1 ${FAR + CELL} 0A${CELL} ${CELL} 0 0 1 ${FAR} ${CELL}Z`;
+const LEAF = `M${FAR} ${CELL}A${CELL} ${CELL} 0 0 1 ${FAR + CELL} 0A${CELL} ${CELL} 0 0 1 ${FAR} ${CELL}Z`;
 
-/** `default` on light backgrounds, `reversed` on Ink / dark backgrounds. */
-export type LogoVariant = "default" | "reversed";
+/** Mark size and corner radius relative to the logo (measured from the sheet's app icon). */
+const MARK_SCALE = 0.49;
+const CORNER = 23;
+const OFFSET = (100 - 100 * MARK_SCALE) / 2;
 
-export function logoColors(variant: LogoVariant): { squares: string; leaf: string } {
-  return variant === "reversed"
-    ? { squares: tokens.brand.ground, leaf: tokens.brand.leafLight }
-    : { squares: tokens.brand.ink, leaf: tokens.brand.leaf };
-}
+/** The logo: 100 × 100 view box, transparent outside the rounded square. */
+export const LOGO_SVG = [
+  `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100">`,
+  `<rect width="100" height="100" rx="${CORNER}" fill="${tokens.brand.ink}"/>`,
+  `<g transform="translate(${OFFSET} ${OFFSET}) scale(${MARK_SCALE})">`,
+  ...SQUARES.map(
+    ([x, y]) =>
+      `<rect x="${x}" y="${y}" width="${CELL}" height="${CELL}" rx="${R}" fill="${tokens.brand.ground}"/>`,
+  ),
+  `<path d="${LEAF}" fill="${tokens.brand.leafLight}"/>`,
+  `</g>`,
+  `</svg>`,
+].join("");
 
-/** Logo colours that suit a theme's background. */
-export function logoVariantFor(theme: "dark" | "light"): LogoVariant {
-  return theme === "dark" ? "reversed" : "default";
-}
-
-/** Stand-alone SVG markup of the mark (for generated assets). */
-export function logoMarkSvg(
-  variant: LogoVariant,
-  options: { size?: number; background?: string; padding?: number; radius?: number } = {},
-): string {
-  const { size = 512, background, padding = 0, radius = 0 } = options;
-  const { squares, leaf } = logoColors(variant);
-  const inner = LOGO_VIEWBOX;
-  const total = inner + padding * 2;
-  const bg = background
-    ? `<rect width="${total}" height="${total}" rx="${radius}" fill="${background}"/>`
-    : "";
-  const rects = LOGO_SQUARES.map(
-    (s) =>
-      `<rect x="${s.x + padding}" y="${s.y + padding}" width="${s.size}" height="${s.size}" rx="${s.r}" fill="${squares}"/>`,
-  ).join("");
-  return `<svg xmlns="http://www.w3.org/2000/svg" width="${size}" height="${size}" viewBox="0 0 ${total} ${total}">${bg}${rects}<path transform="translate(${padding} ${padding})" d="${LOGO_LEAF_PATH}" fill="${leaf}"/></svg>`;
-}
+/** `url(...)` value for CSS (web default logo). */
+export const LOGO_CSS_URL = `url("data:image/svg+xml,${encodeURIComponent(LOGO_SVG)}")`;

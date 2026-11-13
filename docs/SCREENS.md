@@ -6,7 +6,7 @@ Mockups 1–8 (`design/app-screens-reference.pdf`) are fixed: build them as draw
 
 | # | Screen | Content |
 |---|---|---|
-| N-1 | Welcome / sign-in (Step 1 of 2) | Logo lockup, one line about the app, "Continue with Google" (first sign-in registers automatically; helper text shows the allowed domains when the rule is restricted, e.g. "Use your @diu.edu.bd email"), "Sign in with email code" when enabled, "Browse routine without signing in" (guest), language switch EN / বাংলা. Error state shows the admin's rejection message. [AUTH-1, AUTH-2, AUTH-9] |
+| N-1 | Welcome / sign-in (Step 1 of 2) | Logo (the one app logo) with "NFE Schedule" as text beside it, one line about the app, "Continue with Google" (first sign-in registers automatically; helper text shows the allowed domains when the rule is restricted, e.g. "Use your @diu.edu.bd email"), "Sign in with email code" when enabled, "Browse routine without signing in" (guest), language switch EN / বাংলা. Error state shows the admin's rejection message. [AUTH-1, AUTH-2, AUTH-9] |
 | N-17 | Waiting for approval | Shown after sign-in while the account is `pending`: short message, email used, "Browse routines meanwhile" (guest view), "Sign out". Switches to step 2 automatically when approved (push + sync). [AUTH-8] |
 | 1 | Choose your class (Step 2 of 2) | As mockup. Batches from active batches, sections of the chosen batch, lab groups of the chosen section; "New student? Batch not listed yet?" card; "Show my routine". [ONB-1, ONB-2] |
 | 2 | Home | As mockup. Header avatar + name + "NFE · 263-A · Lab A1", bell with dot; date; "No classes today" / "Today"; Next class card; day list with "Full week"; version banner. Pull to refresh; "Updated … ago". [HOME-1, RT-8, SYNC-4] |

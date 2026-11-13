@@ -1,4 +1,5 @@
 import { cx } from "./cx";
+import { Logo } from "./logo";
 
 export interface AdminNavLink {
   href: string;
@@ -21,8 +22,11 @@ export interface AdminTopBarProps {
 export function AdminTopBar({ appName, areaLabel, links, user, navLabel }: AdminTopBarProps) {
   return (
     <header className="flex h-16 items-center gap-8 border-b border-border bg-bg px-6">
-      <span className="shrink-0 font-display text-heading font-bold text-text">
-        {appName} <span className="text-accent">{areaLabel}</span>
+      <span className="flex shrink-0 items-center gap-3">
+        <Logo size={32} />
+        <span className="font-display text-heading font-bold text-text">
+          {appName} <span className="text-accent">{areaLabel}</span>
+        </span>
       </span>
       <nav aria-label={navLabel} className="flex min-w-0 flex-1 gap-1 overflow-x-auto">
         {links.map((l) => (

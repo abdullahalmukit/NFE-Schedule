@@ -48,6 +48,11 @@
   --shadow-card: var(--nfe-card-shadow);
 }
 
+/* The single app logo; <html style> overrides it with the admin's logo. */
+:root {
+  --nfe-logo-image: url("data:image/svg+xml,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20viewBox%3D%220%200%20100%20100%22%3E%3Crect%20width%3D%22100%22%20height%3D%22100%22%20rx%3D%2223%22%20fill%3D%22%2314321F%22%2F%3E%3Cg%20transform%3D%22translate(25.5%2025.5)%20scale(0.49)%22%3E%3Crect%20x%3D%220%22%20y%3D%220%22%20width%3D%2244%22%20height%3D%2244%22%20rx%3D%2212%22%20fill%3D%22%23F3F6F1%22%2F%3E%3Crect%20x%3D%220%22%20y%3D%2256%22%20width%3D%2244%22%20height%3D%2244%22%20rx%3D%2212%22%20fill%3D%22%23F3F6F1%22%2F%3E%3Crect%20x%3D%2256%22%20y%3D%2256%22%20width%3D%2244%22%20height%3D%2244%22%20rx%3D%2212%22%20fill%3D%22%23F3F6F1%22%2F%3E%3Cpath%20d%3D%22M56%2044A44%2044%200%200%201%20100%200A44%2044%200%200%201%2056%2044Z%22%20fill%3D%22%235FD18A%22%2F%3E%3C%2Fg%3E%3C%2Fsvg%3E");
+}
+
 :root,
 [data-theme="dark"] {
   color-scheme: dark;
@@ -70,8 +75,6 @@
   --nfe-purple: #B39BF5;
   --nfe-purple-soft: #2A2440;
   --nfe-card-shadow: none;
-  --nfe-logo-squares: #F3F6F1;
-  --nfe-logo-leaf: #5FD18A;
   --nfe-course-0-fill: #2D6F58;
   --nfe-course-0-on-fill: #F1F5F9;
   --nfe-course-0-tint: #234B43;
@@ -127,8 +130,6 @@
   --nfe-purple: #6D4FC2;
   --nfe-purple-soft: #ECE6FA;
   --nfe-card-shadow: 0 1px 2px rgba(20, 50, 31, 0.06);
-  --nfe-logo-squares: #14321F;
-  --nfe-logo-leaf: #2FA35A;
   --nfe-course-0-fill: #D8F0E3;
   --nfe-course-0-on-fill: #14321F;
   --nfe-course-0-tint: #D8F0E3;
@@ -185,8 +186,6 @@
     --nfe-purple: #6D4FC2;
     --nfe-purple-soft: #ECE6FA;
     --nfe-card-shadow: 0 1px 2px rgba(20, 50, 31, 0.06);
-    --nfe-logo-squares: #14321F;
-    --nfe-logo-leaf: #2FA35A;
     --nfe-course-0-fill: #D8F0E3;
     --nfe-course-0-on-fill: #14321F;
     --nfe-course-0-tint: #D8F0E3;
