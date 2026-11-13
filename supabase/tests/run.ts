@@ -39,7 +39,7 @@ for (const file of files) {
   const path = join(tmp, file);
   writeFileSync(path, sql);
 
-  let rows: Row[] = [];
+  let rows: Row[];
   try {
     const out = execFileSync(
       "pnpm",
