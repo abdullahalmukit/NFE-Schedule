@@ -5,7 +5,6 @@ import { Logo, Text, useTheme } from "@nfe/ui/native";
 
 export default function HomeScreen() {
   const theme = useTheme();
-  const [strong = "", ...rest] = t(DEFAULT_LOCALE, "app.name").split(" ");
   return (
     <View
       style={{
@@ -17,12 +16,13 @@ export default function HomeScreen() {
         backgroundColor: theme.color.bg,
       }}
     >
-      <Logo
-        strong={strong}
-        rest={rest.join(" ")}
-        tagline={t(DEFAULT_LOCALE, "app.tagline")}
-        size={48}
-      />
+      <Logo size={96} />
+      <View style={{ alignItems: "center", gap: 4 }}>
+        <Text variant="title">{t(DEFAULT_LOCALE, "app.name")}</Text>
+        <Text variant="small" color="textMuted">
+          {t(DEFAULT_LOCALE, "app.tagline")}
+        </Text>
+      </View>
       {__DEV__ ? (
         <Link href="/dev/ui">
           {/* Developer-only entry to the component gallery. */}

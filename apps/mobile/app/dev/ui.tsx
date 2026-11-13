@@ -3,7 +3,7 @@ import { ScrollView, View } from "react-native";
 import { Redirect } from "expo-router";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 import { DEFAULT_LOCALE } from "@nfe/core";
-import { showcase as s, tokens, type ThemePreference } from "@nfe/ui";
+import { showcase as s, type ThemePreference } from "@nfe/ui";
 import {
   BottomNav,
   Button,
@@ -17,7 +17,6 @@ import {
   IconButton,
   InfoBanner,
   Logo,
-  LogoMark,
   MenuTile,
   NextClassCard,
   Pill,
@@ -84,7 +83,10 @@ function Gallery({
           gap: 32,
         }}
       >
-        <Logo strong="NFE" rest="Schedule" tagline="UI gallery" />
+        <View style={{ flexDirection: "row", alignItems: "center", gap: 12 }}>
+          <Logo size={40} />
+          <Text variant="title">{s.admin.appName}</Text>
+        </View>
         <SegmentedControl
           options={[
             { value: "system", label: "System" },
@@ -96,15 +98,12 @@ function Gallery({
         />
 
         <Block title="Logo">
-          <Row>
-            <LogoMark size={48} />
-            <View style={{ backgroundColor: tokens.brand.ink, borderRadius: 16, padding: 10 }}>
-              <LogoMark size={40} variant="reversed" />
-            </View>
-            <View style={{ backgroundColor: tokens.brand.ground, borderRadius: 16, padding: 10 }}>
-              <LogoMark size={40} variant="default" />
-            </View>
-          </Row>
+          <View style={{ flexDirection: "row", alignItems: "flex-end", gap: 16 }}>
+            <Logo size={16} />
+            <Logo size={32} />
+            <Logo size={48} />
+            <Logo size={96} label={s.admin.appName} />
+          </View>
         </Block>
 
         <Block title="Type">
