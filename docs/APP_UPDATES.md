@@ -50,7 +50,7 @@ Pilot APK installs need the phone's "Install unknown apps" permission for the br
 
 Both must use the **same application ID** and the **same signing key**, so the Play Store version installs over the APK and keeps local data:
 
-1. Choose the application ID before the first build (proposed `app.nfeschedule.mobile`) and never change it.
+1. The application ID is **final: `com.diu.nfeschedule`** — Android package name and iOS bundle identifier, set in `apps/mobile/app.config.ts`. It must never be changed: a different ID is a different app to Android, the Play Store and the App Store, so users would lose updates and local data. (URL scheme: `nfeschedule`.)
 2. Let EAS create and keep the Android keystore (`eas credentials`). Back up the keystore file and passwords outside EAS.
 3. When creating the Play Console app, enrol in Play App Signing with **"Use existing app signing key"** and upload the same keystore (export from `eas credentials`). The upload key can be the same key.
 4. Publish the first Play build with a higher `versionCode` than the last APK. Add a release in Admin → App releases with the Play Store URL on the `production` channel and raise the `preview` channel's minimum so APK users are guided to the Play Store.
