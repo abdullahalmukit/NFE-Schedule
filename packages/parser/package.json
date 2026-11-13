@@ -1,0 +1,12 @@
+{
+  "name": "@nfe/parser",
+  "version": "0.1.0",
+  "private": true,
+  "author": "Mukit <abdullahalmukit287@gmail.com>",
+  "main": "src/index.ts",
+  "types": "src/index.ts",
+  "scripts": {
+    "test": "tsx test/routine-fall-2026-v5.test.ts",
+    "typecheck": "tsc --noEmit -p ."
+  }
+}

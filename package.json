@@ -1,0 +1,10 @@
+{
+  "name": "nfe-schedule",
+  "private": true,
+  "author": "Mukit <abdullahalmukit287@gmail.com>",
+  "packageManager": "pnpm@9.15.0",
+  "scripts": {
+    "test:parser": "tsx packages/parser/test/routine-fall-2026-v5.test.ts"
+  },
+  "engines": { "node": ">=20" }
+}

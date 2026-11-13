@@ -1,0 +1,5 @@
+[
+  { "code": "0531-1103", "title": "Course title in English", "title_bn": "বাংলা শিরোনাম (ঐচ্ছিক)", "credit": 3, "type": "theory", "offering_department": "NFE" },
+  { "code": "0531-1104", "title": "Course title (lab)", "credit": 1.5, "type": "lab", "offering_department": "NFE" },
+  { "code": "AOL 0223-111", "title": "Course title", "credit": 2, "type": "theory" }
+]

@@ -1,0 +1,19 @@
+[
+  {
+    "initial": "DAMR",
+    "department": "NFE",
+    "full_name": "Full name as it should appear",
+    "designation": "Assistant Professor",
+    "email": "name@diu.edu.bd",
+    "phone": "+8801XXXXXXXXX",
+    "office_room": "AB-1: 501",
+    "consultation_hours": "Sun, Tue 11:20-12:50"
+  },
+  {
+    "initial": "NI",
+    "department": "ITM",
+    "full_name": "Guest teacher's full name",
+    "designation": "Lecturer",
+    "is_guest": true
+  }
+]

@@ -1,0 +1,31 @@
+#!/bin/sh
+# Single-author repository: only Mukit may author or commit.
+EXPECTED_NAME="Mukit"
+EXPECTED_EMAIL="abdullahalmukit287@gmail.com"
+
+author=$(git var GIT_AUTHOR_IDENT | sed 's/ [0-9]* [+-][0-9]*$//')
+committer=$(git var GIT_COMMITTER_IDENT | sed 's/ [0-9]* [+-][0-9]*$//')
+want="$EXPECTED_NAME <$EXPECTED_EMAIL>"
+
+if [ "$author" != "$want" ] || [ "$committer" != "$want" ]; then
+  echo "pre-commit: author/committer must be: $want" >&2
+  echo "  author:    $author" >&2
+  echo "  committer: $committer" >&2
+  echo "Run: sh scripts/setup-git.sh" >&2
+  exit 1
+fi
+
+branch=$(git symbolic-ref --short HEAD 2>/dev/null || echo "")
+if [ -n "$branch" ] && [ "$branch" != "main" ]; then
+  if ! echo "$branch" | grep -Eq '^[a-z0-9]+(-[a-z0-9]+)*$'; then
+    echo "pre-commit: branch '$branch' must be the feature name in kebab-case (e.g. routine-import)" >&2
+    exit 1
+  fi
+fi
+
+# Local tool files must never be committed.
+if git diff --cached --name-only | grep -Eiq '(^|/)(claude(\.local)?\.md|\.claude/)'; then
+  echo "pre-commit: local assistant files are not allowed in commits" >&2
+  exit 1
+fi
+exit 0

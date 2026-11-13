@@ -1,0 +1,42 @@
+# dependencies and builds
+node_modules/
+.pnpm-store/
+dist/
+build/
+.next/
+out/
+coverage/
+.turbo/
+*.tsbuildinfo
+
+# expo / mobile
+.expo/
+apps/mobile/android/
+apps/mobile/ios/
+*.jks
+*.keystore
+*.p8
+*.p12
+*.mobileprovision
+google-services.json
+GoogleService-Info.plist
+credentials.json
+
+# env and secrets
+.env
+.env.*
+!.env.example
+*.pem
+
+# hosting / supabase local state
+.vercel/
+supabase/.temp/
+supabase/.branches/
+
+# local assistant / editor files (never committed)
+CLAUDE.md
+CLAUDE.local.md
+.claude/
+.vscode/
+.idea/
+.DS_Store
