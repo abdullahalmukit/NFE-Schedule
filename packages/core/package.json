@@ -13,5 +13,8 @@
   "scripts": {
     "test": "vitest run --root ../.. packages/core",
     "typecheck": "tsc --noEmit -p ."
+  },
+  "devDependencies": {
+    "@supabase/supabase-js": "^2.119.0"
   }
 }
