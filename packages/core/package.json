@@ -16,5 +16,8 @@
   },
   "devDependencies": {
     "@supabase/supabase-js": "^2.119.0"
+  },
+  "dependencies": {
+    "zod": "^4.6.7"
   }
 }
