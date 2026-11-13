@@ -1,0 +1,24 @@
+{
+  "name": "@nfe/web",
+  "version": "0.1.0",
+  "private": true,
+  "author": "Mukit <abdullahalmukit287@gmail.com>",
+  "type": "module",
+  "scripts": {
+    "dev": "next dev",
+    "build": "next build",
+    "start": "next start",
+    "typecheck": "next typegen && tsc --noEmit -p ."
+  },
+  "dependencies": {
+    "@nfe/core": "workspace:^",
+    "@nfe/ui": "workspace:^",
+    "next": "^16.4.6",
+    "react": "^19.3.1",
+    "react-dom": "^19.3.1"
+  },
+  "devDependencies": {
+    "@types/react": "^19.3.0",
+    "@types/react-dom": "^19.3.0"
+  }
+}

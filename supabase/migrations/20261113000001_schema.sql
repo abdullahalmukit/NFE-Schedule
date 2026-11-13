@@ -233,7 +233,7 @@ create table public.profiles (
   section_id    uuid references public.sections(id),
   lab_group_id  uuid references public.lab_groups(id),
   faculty_id    uuid references public.faculty(id),
-  locale        text not null default 'bn' check (locale in ('en', 'bn')),
+  locale        text not null default 'en' check (locale in ('en', 'bn')),
   awaiting_routine boolean not null default false, -- signed up before own batch was published
   created_at    timestamptz not null default now(),
   updated_at    timestamptz not null default now(),

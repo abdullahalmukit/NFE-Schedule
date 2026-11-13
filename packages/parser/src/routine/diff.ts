@@ -37,11 +37,14 @@ export interface RoutineDiff<T extends DiffInput> {
   affected: string[];
 }
 
-const idOf = (c: DiffInput) => `${c.batch}-${c.section}|${c.courseCode}|${c.sectionLabel}|${c.labGroup ?? ""}`;
+const idOf = (c: DiffInput) =>
+  `${c.batch}-${c.section}|${c.courseCode}|${c.sectionLabel}|${c.labGroup ?? ""}`;
 const whereOf = (c: DiffInput) => `${c.day}|${c.slot}`;
 const sameDetails = (a: DiffInput, b: DiffInput) =>
-  a.facultyInitial === b.facultyInitial && (a.facultyDept ?? null) === (b.facultyDept ?? null) &&
-  a.building === b.building && a.room === b.room;
+  a.facultyInitial === b.facultyInitial &&
+  (a.facultyDept ?? null) === (b.facultyDept ?? null) &&
+  a.building === b.building &&
+  a.room === b.room;
 
 export function diffRoutines<T extends DiffInput>(before: T[], after: T[]): RoutineDiff<T> {
   const group = (xs: T[]) => {
@@ -67,7 +70,11 @@ export function diffRoutines<T extends DiffInput>(before: T[], after: T[]): Rout
       if (sameDetails(o, n)) unchanged++;
       else {
         const fields: Change<T>["fields"] = [];
-        if (o.facultyInitial !== n.facultyInitial || (o.facultyDept ?? null) !== (n.facultyDept ?? null)) fields.push("faculty");
+        if (
+          o.facultyInitial !== n.facultyInitial ||
+          (o.facultyDept ?? null) !== (n.facultyDept ?? null)
+        )
+          fields.push("faculty");
         if (o.building !== n.building || o.room !== n.room) fields.push("room");
         changes.push({ kind: "changed", before: o, after: n, fields });
       }
@@ -91,7 +98,9 @@ export function diffRoutines<T extends DiffInput>(before: T[], after: T[]): Rout
   for (const c of changes) {
     for (const x of [c.before, c.after]) {
       if (!x) continue;
-      affected.add(x.labGroup ? `${x.batch}-${x.section}/${x.labGroup}` : `${x.batch}-${x.section}`);
+      affected.add(
+        x.labGroup ? `${x.batch}-${x.section}/${x.labGroup}` : `${x.batch}-${x.section}`,
+      );
     }
   }
   return { changes, unchanged, affected: [...affected].sort() };

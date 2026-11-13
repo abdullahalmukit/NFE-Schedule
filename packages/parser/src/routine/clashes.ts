@@ -43,7 +43,10 @@ function slotsOf(c: ClashInput): number[] {
 const classSig = (c: ClashInput) => `${c.courseCode}|${c.sectionLabel}|${c.labGroup ?? ""}`;
 
 export function detectClashes<T extends ClashInput>(classes: T[]): Clash<T>[] {
-  const buckets = new Map<string, { kind: Clash<T>["kind"]; day: number; slot: number; items: T[] }>();
+  const buckets = new Map<
+    string,
+    { kind: Clash<T>["kind"]; day: number; slot: number; items: T[] }
+  >();
   const add = (kind: Clash<T>["kind"], key: string, day: number, slot: number, c: T) => {
     const k = `${kind}#${key}#${day}#${slot}`;
     const b = buckets.get(k) ?? { kind, day, slot, items: [] };

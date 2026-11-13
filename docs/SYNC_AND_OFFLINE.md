@@ -18,7 +18,7 @@ Local database: `expo-sqlite` with Drizzle ORM; schema mirrors the synced tables
 |---|---|
 | `sync_state` | `server_version`, `last_success_at`, `last_error` |
 | `outbox` | queued writes: `id, table, op (upsert / delete), payload, created_at, attempts, last_error` |
-| `kv` | cached settings snapshot, chosen theme, language |
+| `kv` | cached settings snapshot, chosen theme, language (a guest's language lives only here; signed-in users' language is `profiles.locale`) |
 
 **Pull** (`pull()`):
 1. Read `server_version` (0 on first run).

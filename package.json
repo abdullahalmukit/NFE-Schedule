@@ -2,9 +2,34 @@
   "name": "nfe-schedule",
   "private": true,
   "author": "Mukit <abdullahalmukit287@gmail.com>",
+  "type": "module",
   "packageManager": "pnpm@9.15.0",
   "scripts": {
-    "test:parser": "tsx packages/parser/test/routine-fall-2026-v5.test.ts"
+    "dev": "pnpm --parallel --filter @nfe/web --filter @nfe/mobile dev",
+    "dev:web": "pnpm --filter @nfe/web dev",
+    "dev:mobile": "pnpm --filter @nfe/mobile dev",
+    "build": "pnpm --filter @nfe/web build",
+    "test": "vitest run",
+    "test:watch": "vitest",
+    "test:parser": "pnpm --filter @nfe/parser test",
+    "lint": "eslint .",
+    "typecheck": "pnpm -r --parallel typecheck",
+    "format": "prettier --write .",
+    "format:check": "prettier --check ."
   },
-  "engines": { "node": ">=20" }
+  "devDependencies": {
+    "@eslint/js": "^10.0.1",
+    "@types/node": "^24.19.2",
+    "eslint": "^10.14.0",
+    "eslint-plugin-react-hooks": "^7.1.1",
+    "globals": "^17.14.0",
+    "prettier": "^3.10.1",
+    "tsx": "^4.23.15",
+    "typescript": "^5.9.3",
+    "typescript-eslint": "^8.72.2",
+    "vitest": "^5.1.0"
+  },
+  "engines": {
+    "node": ">=20"
+  }
 }

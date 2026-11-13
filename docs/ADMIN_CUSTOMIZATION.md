@@ -34,6 +34,7 @@ Each key has a zod schema in `packages/core/settings/schema.ts`; the settings fo
 | `auth.signup` | `{domain_mode:"restricted", allowed_domains:["diu.edu.bd"], auto_register:true, google:true, email_otp:false, message_en, message_bn}` | Who can register: `restricted` = only listed domains (and subdomains), `any` = every email; auto registration on / off (off = admin approval); which sign-in buttons show; rejection message |
 | `auth.blocked_emails` | `[]` | Emails that may never register (private) |
 | `auth.main_admin_email` | `"..."` | Bootstrap main admin (private) |
+| `i18n.default_locale` | `"en"` (`"en"` or `"bn"`) | Language for new users and guests. Users who picked a language keep it; the phone's language is not used |
 | `week` | `{start_day:0, working_days:[0..5], day_names_en, day_names_bn}` | Week shown in pickers and grids |
 | `parser.routine` | `{use_defaults:true}` or full rules | Routine file format (see `ROUTINE_IMPORT.md` §6) |
 | `cr.policy` | `{max_per_section:2, applications_open:true, allow_any_section:true, expire_with_semester:true, require_message:false}` | CR rules |
