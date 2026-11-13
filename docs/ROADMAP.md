@@ -10,7 +10,7 @@ Status legend: ☐ to do · ◐ in progress · ☑ done (update this file in the
 |---|---|---|
 | ☑ `project-setup` | pnpm workspace, `apps/web`, `apps/mobile`, `packages/{core,parser,ui}`, TypeScript strict, ESLint, Prettier, Vitest, move parser test into Vitest, root scripts (`dev`, `build`, `test`, `lint`, `typecheck`) | `pnpm test` runs the Fall 2026 parser test green; `pnpm typecheck` clean |
 | ☑ `design-system` | `packages/ui`: tokens → Tailwind preset + RN theme, fonts (Space Grotesk, Inter, Hind Siliguri), icons, core components from `DESIGN_SYSTEM.md` §5, logo SVG + app icons + splash + favicons | A storybook-like `/dev/ui` page on web and a dev screen on mobile show every component in dark and light |
-| ☐ `supabase-schema` | Push migrations to the cloud project, fix errors, run `DATABASE.md` §4 checks, generate types, Supabase client helpers for web (SSR) and mobile | Checks pass; types committed |
+| ☑ `supabase-schema` | Push migrations to the cloud project, fix errors, run `DATABASE.md` §4 checks, generate types, Supabase client helpers for web (SSR) and mobile | Checks pass; types committed |
 
 **Gate 1:** department approves the design (screens 1–8 + N-/A- list).
 

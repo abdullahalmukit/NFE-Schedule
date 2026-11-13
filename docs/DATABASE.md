@@ -1,6 +1,14 @@
 # Database
 
-Source of truth: `supabase/migrations/` (cloud project; apply with `supabase db push`). Generate types after every schema change: `supabase gen types typescript --linked > packages/core/src/types/database.ts`.
+Source of truth: `supabase/migrations/` (cloud project only). Commands (root `package.json`; Supabase CLI 3 targets a local stack unless `--remote` is given, so the scripts always pass it):
+
+| Script | Does |
+|---|---|
+| `pnpm db:push:dry` | `supabase db push --remote --dry-run`: list migrations that would be applied |
+| `pnpm db:push` | `supabase db push --remote` |
+| `pnpm db:types` | regenerate `packages/core/src/types/database.ts` (run after every schema change) |
+| `pnpm db:test` | run the checks in `supabase/tests/` (§4) |
+| `pnpm db:advisors` | Supabase security and performance advisors (§5) |
 
 | Migration | Contents |
 |---|---|
@@ -8,8 +16,9 @@ Source of truth: `supabase/migrations/` (cloud project; apply with `supabase db 
 | `20261113000002_security.sql` | Helper functions, public views, row-level security, guard and audit triggers |
 | `20261113000003_functions.sql` | Auth hook, new-user trigger, `choose_section`, CR functions, publish / archive, notification recipients, `notify_on_post`, `sync_pull`, `daily_maintenance` |
 | `20261113000004_storage_and_defaults.sql` | Storage buckets and policies, default settings and feature flags, NFE department |
+| `20261114000001_lock_down_functions.sql` | `signup_settings()` (holds the private blocked-email list) no longer callable by anon / signed-in users; trigger functions not callable directly; fixed `search_path` on four functions |
 
-These four files were written ahead of the code and have not yet been run against a database. The first task of the `supabase-schema` branch is to push them to the cloud project, fix anything Postgres rejects, and run the checks in §4.
+All migrations above are applied to the cloud project. Never edit an applied migration; add a new one.
 
 ## 1. Entities
 
@@ -50,13 +59,29 @@ The same function runs on the web, the phone, the Home widget and the reminder s
 
 `version_in_effect(semester, date)` in SQL and `versionInEffect()` in `packages/core` must agree: the published version of the semester with the latest `effective_from ≤ date`. Publishing a version dated in the future leaves the current one live until that date; the daily job archives superseded versions.
 
-## 4. Checks after the first push
+## 4. Database checks (`supabase/tests/`)
 
-- `select public.sync_pull(0);` as anon returns public tables only (no profiles, no attendance).
-- A student cannot `update profiles set account_type = 'faculty'` on themselves.
-- Sign-up rule: with `domain_mode = restricted` a gmail.com sign-up is refused and a diu.edu.bd one accepted; with `any` both are accepted; an invited faculty email is accepted in both modes.
-- With `auto_register = false` a new account is `pending`, cannot read notices or post, and becomes active after `review_signup`.
-- A CR of 263-A can insert a `class_exceptions` row for 263-A and not for 263-B.
-- `apply_for_cr` works for a section other than one's own; `review_cr_request` refuses approval above the limit.
-- Importing the fixture creates 55 sections, 578 `class_slots`, 138 with a lab group.
-- Supabase Dashboard → Advisors: no "RLS disabled" errors. The two definer views are intentional (they expose a column subset); note them in the advisor.
+`pnpm db:test` runs every `NN-*.sql` file against the cloud project. Each file runs in its own transaction: `_setup.sql` creates test users (directly in `auth.users`, so the new-user trigger runs), a test semester, batch T263 with sections A and B, and `pg_temp` helpers to act as a guest or as a signed-in user; the check records results; the transaction always ends in `ROLLBACK`, so no test user or row is kept.
+
+| File | Checks |
+|---|---|
+| `01-sync-pull.sql` | `sync_pull(0)` as anon: runs, no `me`, no profiles, no attendance / notes / extra courses, private settings hidden, public data visible; as a student: own profile and only own private rows |
+| `02-profile-guard.sql` | A student cannot change own account type, status or email, nor another profile; can change own language |
+| `03-signup-rule.sql` | `hook_before_user_created`: restricted refuses gmail.com and look-alike domains, accepts diu.edu.bd and subdomains; any accepts both; invited faculty email accepted and blocked email refused in both modes; admin message returned; only the auth service may call the hook |
+| `04-pending-approval.sql` | With `auto_register = false`: new account pending, cannot read notices, post, apply for CR or approve itself; `review_signup` by a users-area admin activates it; invited faculty active at once |
+| `05-cr-exceptions.sql` | CR of A can post a class exception for A (and a notification event is created), not for B; a plain student cannot |
+| `06-cr-apply-limit.sql` | A student of A can apply for B; approval refused at `max_per_section`; works again below the limit |
+| `07-function-privileges.sql` | `signup_settings()` not callable by anon / signed-in users; helper functions have a fixed `search_path` |
+
+Still to check: importing the Fall 2026 fixture creates 55 sections, 578 `class_slots`, 138 with a lab group — runs once the import exists (`routine-import`, Gate 2).
+
+Not checkable from SQL: the "Before User Created" hook must be switched on in Supabase Dashboard → Authentication → Hooks (`public.hook_before_user_created`).
+
+## 5. Advisors (Supabase Dashboard → Advisors, or `pnpm db:advisors`)
+
+No "RLS disabled" findings. Known, intentional findings:
+
+- **Security definer view** (`faculty_public`, `faculty_directory`, `section_crs`): intentional. They run with the owner's rights to expose a column subset of a protected table: `faculty_public` (guests: initials, names, designations), `faculty_directory` (signed-in members: plus the contacts each teacher chose to show), `section_crs` (signed-in members: CR names per section, no emails; needed for "Your CRs for 263-A").
+- **Security definer function executable by anon / authenticated**: intentional. They are either RLS helpers that policies call as the current user (`has_admin_area`, `is_active_member`, `is_cr_of`, ...) or RPCs the apps call (`apply_for_cr`, `choose_section`, `review_*`, `publish_routine_version`, ...), each checking the caller itself. `rls_auto_enable()` is Supabase's own function, not ours.
+- **Extension in public** (`citext`): left as is; moving it would touch every citext column.
+- Performance (`auth_rls_initplan`, `multiple_permissive_policies`, `unindexed_foreign_keys`, `unused_index`): not an issue at this data size (a few thousand rows); revisit after the pilot.
