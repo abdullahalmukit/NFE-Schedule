@@ -7,22 +7,38 @@ export type UiLocale = "en" | "bn";
 interface UiContextValue {
   theme: Theme;
   locale: UiLocale;
+  /** Admin logo (`branding.logo_path`); null = built-in logo. */
+  logoUrl: string | null;
 }
 
-const UiContext = createContext<UiContextValue>({ theme: getTheme("dark"), locale: "en" });
+const UiContext = createContext<UiContextValue>({
+  theme: getTheme("dark"),
+  locale: "en",
+  logoUrl: null,
+});
 
 export interface UiProviderProps {
   /** Settings → Theme (ME-8); follows the system by default. */
   preference?: ThemePreference;
   /** Picks Hind Siliguri for Bangla text. */
   locale?: UiLocale;
+  /** Public URL of the admin's logo, if one is set. */
+  logoUrl?: string | null;
   children: ReactNode;
 }
 
-export function UiProvider({ preference = "system", locale = "en", children }: UiProviderProps) {
+export function UiProvider({
+  preference = "system",
+  locale = "en",
+  logoUrl = null,
+  children,
+}: UiProviderProps) {
   const system = useColorScheme();
   const name = resolveThemeName(preference, system);
-  const value = useMemo(() => ({ theme: getTheme(name), locale }), [name, locale]);
+  const value = useMemo(
+    () => ({ theme: getTheme(name), locale, logoUrl }),
+    [name, locale, logoUrl],
+  );
   return <UiContext.Provider value={value}>{children}</UiContext.Provider>;
 }
 

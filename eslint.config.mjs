@@ -3,6 +3,11 @@ import globals from "globals";
 import reactHooks from "eslint-plugin-react-hooks";
 import tseslint from "typescript-eslint";
 
+/** "#abc", "#aabbcc" or "#aabbccdd" anywhere in a string. */
+const HEX = String.raw`/#([0-9a-fA-F]{8}|[0-9a-fA-F]{6}|[0-9a-fA-F]{3})(?![0-9a-zA-Z])/`;
+const HEX_MESSAGE =
+  "Raw hex colour: use a token from @nfe/ui (theme colours, tokens.brand) instead.";
+
 export default tseslint.config(
   {
     ignores: [
@@ -46,5 +51,27 @@ export default tseslint.config(
   {
     files: ["**/*.{js,cjs}"],
     rules: { "@typescript-eslint/no-require-imports": "off" },
+  },
+  // Colours come from design tokens (@nfe/ui); a raw hex colour anywhere else fails lint.
+  {
+    files: ["**/*.{ts,tsx,js,jsx,mjs,cjs}"],
+    ignores: ["packages/ui/**"],
+    rules: {
+      "no-restricted-syntax": [
+        "error",
+        {
+          selector: `Literal[value=${HEX}]`,
+          message: HEX_MESSAGE,
+        },
+        {
+          selector: `TemplateElement[value.raw=${HEX}]`,
+          message: HEX_MESSAGE,
+        },
+        {
+          selector: `JSXText[value=${HEX}]`,
+          message: HEX_MESSAGE,
+        },
+      ],
+    },
   },
 );

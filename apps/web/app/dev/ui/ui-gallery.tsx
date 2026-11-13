@@ -18,7 +18,6 @@ import {
   InfoBanner,
   KeyValueRow,
   Logo,
-  LogoMark,
   MenuTile,
   NextClassCard,
   Panel,
@@ -65,22 +64,19 @@ export function UiGallery({ theme }: { theme: ThemeName }) {
     <div data-theme={theme} className="min-w-0 bg-bg p-5 text-text">
       <div className="mx-auto max-w-[480px] space-y-8">
         <div className="flex items-center justify-between">
-          <Logo strong="NFE" rest="Schedule" tagline={s.admin.user} />
+          <div className="flex items-center gap-3">
+            <Logo size={40} />
+            <span className="font-display text-title font-bold">{s.admin.appName}</span>
+          </div>
           <Pill label={theme} tone="accent" />
         </div>
 
         <Block title="Logo">
-          <div className="flex items-center gap-4">
-            <LogoMark size={48} />
-            <span className="rounded-card bg-ground p-3">
-              <LogoMark size={48} variant="default" />
-            </span>
-            <span className="rounded-card bg-ink p-3">
-              <LogoMark size={48} variant="reversed" />
-            </span>
-            <span className="rounded-card bg-ink p-3">
-              <Logo strong="NFE" rest="Schedule" variant="reversed" size={32} />
-            </span>
+          <div className="flex items-end gap-4">
+            <Logo size={16} />
+            <Logo size={32} />
+            <Logo size={48} />
+            <Logo size={96} label={s.admin.appName} />
           </div>
         </Block>
 

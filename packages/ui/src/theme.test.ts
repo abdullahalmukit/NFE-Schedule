@@ -3,7 +3,7 @@ import { fileURLToPath } from "node:url";
 import { describe, expect, it } from "vitest";
 import { contrastRatio, mix } from "./color";
 import { buildThemeCss } from "./css";
-import { logoMarkSvg } from "./logo";
+import { LOGO_SVG } from "./logo";
 import {
   COURSE_TONE_COUNT,
   courseTone,
@@ -73,9 +73,14 @@ describe("generated files", () => {
     expect(file.replace(/\r\n/g, "\n")).toBe(buildThemeCss());
   });
 
-  it("logo svg has three squares and a leaf", () => {
-    const svg = logoMarkSvg("default");
-    expect(svg.match(/<rect/g)?.length).toBe(3);
-    expect(svg).toContain("<path");
+  it("logo.svg is the one logo (run: pnpm --filter @nfe/ui build:assets)", () => {
+    const file = readFileSync(
+      fileURLToPath(new URL("../assets/logo.svg", import.meta.url)),
+      "utf8",
+    );
+    expect(file).toBe(LOGO_SVG);
+    // Ink rounded square + three squares + leaf.
+    expect(LOGO_SVG.match(/<rect/g)?.length).toBe(4);
+    expect(LOGO_SVG.match(/<path/g)?.length).toBe(1);
   });
 });

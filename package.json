@@ -15,7 +15,12 @@
     "lint": "eslint .",
     "typecheck": "pnpm -r --parallel typecheck",
     "format": "prettier --write .",
-    "format:check": "prettier --check ."
+    "format:check": "prettier --check .",
+    "db:push": "supabase db push --remote",
+    "db:push:dry": "supabase db push --remote --dry-run",
+    "db:types": "supabase gen types typescript --remote --schema public > packages/core/src/types/database.ts",
+    "db:advisors": "supabase db advisors --remote --type all",
+    "db:test": "tsx supabase/tests/run.ts"
   },
   "devDependencies": {
     "@eslint/js": "^10.0.1",
@@ -38,9 +43,5 @@
       "react": "19.3.0",
       "react-dom": "19.3.0"
     }
-  },
-  "dependencies": {
-    "@supabase/ssr": "^0.12.7",
-    "@supabase/supabase-js": "^2.119.0"
   }
 }

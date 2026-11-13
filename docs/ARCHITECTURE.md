@@ -88,6 +88,7 @@ Manual edits (ADM-RT-5) skip steps 1–4: the editor creates a draft version cop
 - Attendance, notes, extra courses: readable only by their owner — not by admins.
 - Students cannot change their own account type, status, faculty link or email (trigger `guard_profile_update`); teachers can change only their contact fields (`guard_faculty_self_update`).
 - Service-role key: only in Vercel server environment and Edge Function secrets. Never in `NEXT_PUBLIC_*` or Expo `EXPO_PUBLIC_*` variables.
+- Supabase clients: web `apps/web/lib/supabase/client.ts` (browser), `server.ts` (server, user's session; `apps/web/proxy.ts` refreshes the session cookie), `admin.ts` (service role, `server-only`); phone `apps/mobile/src/lib/supabase.ts` (session in expo-secure-store, chunked). All typed with `Database` from `@nfe/core`.
 - Every admin-managed table has an audit trigger.
 
 ## 5. Environments and variables
