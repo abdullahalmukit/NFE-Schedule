@@ -72,6 +72,7 @@ The same function runs on the web, the phone, the Home widget and the reminder s
 | `05-cr-exceptions.sql` | CR of A can post a class exception for A (and a notification event is created), not for B; a plain student cannot |
 | `06-cr-apply-limit.sql` | A student of A can apply for B; approval refused at `max_per_section`; works again below the limit |
 | `07-function-privileges.sql` | `signup_settings()` not callable by anon / signed-in users; helper functions have a fixed `search_path` |
+| `08-account-roles.sql` | Main admin by email only while none exists (AUTH-3); faculty email → linked faculty account, students cannot link themselves, users-area admin links / unlinks (AUTH-6); admin-invite and CR-email accounts active at once with auto registration off, others pending (AUTH-8) |
 
 Still to check: importing the Fall 2026 fixture creates 55 sections, 578 `class_slots`, 138 with a lab group — runs once the import exists (`routine-import`, Gate 2).
 

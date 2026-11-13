@@ -18,7 +18,7 @@ Status legend: ☐ to do · ◐ in progress · ☑ done (update this file in the
 
 | Branch | Delivers (requirement IDs) |
 |---|---|
-| ☐ `auth-diu-signin` | AUTH-1…3, AUTH-6; Google sign-in on web and mobile; guest mode; profile bootstrap |
+| ☑ `auth-diu-signin` | AUTH-1…3, AUTH-6, AUTH-8, AUTH-9; Google sign-in on web and mobile; email code; guest mode; N-1, N-17; profile bootstrap |
 | ☐ `admin-shell` | Admin layout, area-based navigation, dashboard A-0, admins page A-17 (AUTH-4, AUTH-5), audit log A-18 |
 | ☐ `app-settings` | `packages/core/settings` schemas + defaults, Settings pages A-16, feature flags, i18n overrides, semesters & time slots, week (ADM-SET-1, ADM-SET-2) |
 | ☐ `master-data-manual` | Courses, faculty, departments, batches, rooms pages (ADM-MD-4, ADM-MD-5) |
