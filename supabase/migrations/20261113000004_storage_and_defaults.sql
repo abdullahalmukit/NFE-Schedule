@@ -36,6 +36,7 @@ insert into public.app_settings (key, value, is_public, description) values
   ('auth.signup',               '{"domain_mode": "restricted", "allowed_domains": ["diu.edu.bd"], "auto_register": true, "google": true, "email_otp": false, "message_en": "This email address cannot be used to sign up.", "message_bn": "এই ইমেইল দিয়ে নিবন্ধন করা যাবে না।"}', true, 'Who can sign up and how: domain rule (restricted / any), auto registration, sign-in methods'),
   ('auth.blocked_emails',       '[]', false, 'Emails that may never sign up (private)'),
   ('auth.main_admin_email',     '"REPLACE_WITH_MAIN_ADMIN_EMAIL"', false, 'First sign-in with this email becomes main administrator'),
+  ('i18n.default_locale',       '"en"', true, 'Language for new users and guests'),
   ('week',                      '{"start_day": 0, "working_days": [0,1,2,3,4,5], "day_names_en": ["Saturday","Sunday","Monday","Tuesday","Wednesday","Thursday","Friday"], "day_names_bn": ["শনিবার","রবিবার","সোমবার","মঙ্গলবার","বুধবার","বৃহস্পতিবার","শুক্রবার"]}', true, 'Week layout; 0 = Saturday'),
   ('parser.routine',            '{"use_defaults": true}', false, 'Routine file format rules; see packages/parser DEFAULT_ROUTINE_RULES'),
   ('cr.policy',                 '{"max_per_section": 2, "applications_open": true, "allow_any_section": true, "expire_with_semester": true, "require_message": false}', true, 'Class Representative rules'),

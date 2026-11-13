@@ -69,14 +69,18 @@ begin
     or exists (select 1 from cr_assignments where invited_email = v_email and revoked_at is null)
     or v_email = (select value #>> '{}' from app_settings where key = 'auth.main_admin_email')::citext;
 
-  insert into profiles (id, email, full_name, avatar_url, account_type, faculty_id, status)
+  insert into profiles (id, email, full_name, avatar_url, account_type, faculty_id, status, locale)
   values (new.id, v_email,
           coalesce(new.raw_user_meta_data->>'full_name', new.raw_user_meta_data->>'name'),
           new.raw_user_meta_data->>'avatar_url',
           case when v_fac is not null then 'faculty'::account_type else 'student'::account_type end,
           v_fac,
           case when v_trusted or coalesce((signup_settings()->>'auto_register')::boolean, true)
-               then 'active'::user_status else 'pending'::user_status end)
+               then 'active'::user_status else 'pending'::user_status end,
+          -- language for new users: admin setting i18n.default_locale, English otherwise
+          coalesce((select value #>> '{}' from app_settings
+                     where key = 'i18n.default_locale' and deleted_at is null
+                       and value #>> '{}' in ('en', 'bn')), 'en'))
   on conflict (id) do nothing;
 
   if v_email = (select value #>> '{}' from app_settings where key = 'auth.main_admin_email')::citext

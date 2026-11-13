@@ -96,7 +96,7 @@ Priority: **P0** pilot blocker, **P1** needed for full launch, **P2** convenienc
 | ME-4 | Calendar export (.ics file and Google Calendar). | P2 |
 | ME-5 | Android home-screen widget showing next class. | P2 |
 | ME-6 | Report wrong information on any class (wrong room / time / teacher / missing class / other). | P1 |
-| ME-7 | Bangla and English for every screen; language switch in Settings; default Bangla. | P0 |
+| ME-7 | Bangla and English for every screen; default English; Bangla from Settings. The phone's language is not used. The choice is saved in `profiles.locale` when signed in and on the device (`kv`) for guests. Default for new users and guests: `app_settings.i18n.default_locale`. | P0 |
 | ME-8 | Dark and light theme; follow system by default. | P0 |
 
 ## 10. Admin — routine
