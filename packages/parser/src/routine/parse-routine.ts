@@ -66,14 +66,24 @@ export function parseRoutineTables(
     const titleText = header[0]?.lines.join(" ") ?? "";
     const tm = reTitle.exec(titleText);
     if (!tm?.groups) {
-      issues.push({ severity: "error", code: "BAD_TITLE", message: `Table ${t.index + 1}: title "${titleText}" is not batch-section`, raw: [titleText] });
+      issues.push({
+        severity: "error",
+        code: "BAD_TITLE",
+        message: `Table ${t.index + 1}: title "${titleText}" is not batch-section`,
+        raw: [titleText],
+      });
       continue;
     }
     const batch = tm.groups.batch;
     const section = tm.groups.section;
     const title = `${batch}-${section}`;
     if (seenTitles.has(title)) {
-      issues.push({ severity: "error", code: "DUPLICATE_TABLE", message: `Table ${title} appears more than once`, table: title });
+      issues.push({
+        severity: "error",
+        code: "DUPLICATE_TABLE",
+        message: `Table ${title} appears more than once`,
+        table: title,
+      });
       continue;
     }
     seenTitles.add(title);
@@ -86,7 +96,12 @@ export function parseRoutineTables(
       const label = h.lines.join(" ");
       const m = reTime.exec(label);
       if (!m?.groups) {
-        issues.push({ severity: "error", code: "BAD_HEADER", message: `${title}: header "${label}" is not a time range`, table: title });
+        issues.push({
+          severity: "error",
+          code: "BAD_HEADER",
+          message: `${title}: header "${label}" is not a time range`,
+          table: title,
+        });
       } else {
         const g = m.groups;
         slots.push({
@@ -99,8 +114,16 @@ export function parseRoutineTables(
       pos += h.span;
     }
     if (timeSlots.length === 0) timeSlots = slots;
-    else if (JSON.stringify(slots.map((s) => [s.start, s.end])) !== JSON.stringify(timeSlots.map((s) => [s.start, s.end]))) {
-      issues.push({ severity: "warning", code: "BAD_HEADER", message: `${title}: time slots differ from the first table`, table: title });
+    else if (
+      JSON.stringify(slots.map((s) => [s.start, s.end])) !==
+      JSON.stringify(timeSlots.map((s) => [s.start, s.end]))
+    ) {
+      issues.push({
+        severity: "warning",
+        code: "BAD_HEADER",
+        message: `${title}: time slots differ from the first table`,
+        table: title,
+      });
     }
 
     for (const row of t.rows.slice(1)) {
@@ -108,7 +131,12 @@ export function parseRoutineTables(
       const day = dayIndex(dayText, rules);
       if (day === null) {
         if (row.slice(1).some((c) => c.lines.length)) {
-          issues.push({ severity: "error", code: "BAD_DAY", message: `${title}: row "${dayText}" is not a day`, table: title });
+          issues.push({
+            severity: "error",
+            code: "BAD_DAY",
+            message: `${title}: row "${dayText}" is not a day`,
+            table: title,
+          });
         }
         continue;
       }
@@ -117,7 +145,14 @@ export function parseRoutineTables(
         const here = slot;
         slot += cell.span;
         if (cell.vMergeContinue) {
-          issues.push({ severity: "warning", code: "MERGED_CELL", message: `${title}: vertically merged cell`, table: title, day, slot: here });
+          issues.push({
+            severity: "warning",
+            code: "MERGED_CELL",
+            message: `${title}: vertically merged cell`,
+            table: title,
+            day,
+            slot: here,
+          });
           continue;
         }
         if (cell.lines.length === 0) continue;
@@ -125,19 +160,47 @@ export function parseRoutineTables(
         const raw = cell.lines;
         const at = { table: title, day, slot: here, raw };
         if (cell.span > 1) {
-          issues.push({ severity: "info", code: "MERGED_CELL", message: `${title}: class spans ${cell.span} slots`, ...at });
+          issues.push({
+            severity: "info",
+            code: "MERGED_CELL",
+            message: `${title}: class spans ${cell.span} slots`,
+            ...at,
+          });
         }
         if (raw.length !== rules.lineOrder.length) {
-          issues.push({ severity: "error", code: "BAD_CELL_LINES", message: `${title}: cell has ${raw.length} lines, expected ${rules.lineOrder.length}`, ...at });
+          issues.push({
+            severity: "error",
+            code: "BAD_CELL_LINES",
+            message: `${title}: cell has ${raw.length} lines, expected ${rules.lineOrder.length}`,
+            ...at,
+          });
           continue;
         }
         const line = (k: "course" | "faculty" | "room") => raw[rules.lineOrder.indexOf(k)];
         const mc = reCourse.exec(line("course"));
         const mf = reFaculty.exec(line("faculty"));
         const mr = reRoom.exec(line("room"));
-        if (!mc?.groups) issues.push({ severity: "error", code: "BAD_COURSE_LINE", message: `${title}: course "${line("course")}" not recognised`, ...at });
-        if (!mf?.groups) issues.push({ severity: "error", code: "BAD_FACULTY_LINE", message: `${title}: faculty "${line("faculty")}" not recognised`, ...at });
-        if (!mr?.groups) issues.push({ severity: "error", code: "BAD_ROOM_LINE", message: `${title}: room "${line("room")}" not recognised`, ...at });
+        if (!mc?.groups)
+          issues.push({
+            severity: "error",
+            code: "BAD_COURSE_LINE",
+            message: `${title}: course "${line("course")}" not recognised`,
+            ...at,
+          });
+        if (!mf?.groups)
+          issues.push({
+            severity: "error",
+            code: "BAD_FACULTY_LINE",
+            message: `${title}: faculty "${line("faculty")}" not recognised`,
+            ...at,
+          });
+        if (!mr?.groups)
+          issues.push({
+            severity: "error",
+            code: "BAD_ROOM_LINE",
+            message: `${title}: room "${line("room")}" not recognised`,
+            ...at,
+          });
         if (!mc?.groups || !mf?.groups || !mr?.groups) continue;
 
         const prefix = mc.groups.prefix ?? null;
@@ -175,7 +238,8 @@ export function parseRoutineTables(
   for (const c of clashes) {
     issues.push({
       severity: "error",
-      code: c.kind === "teacher" ? "TEACHER_CLASH" : c.kind === "room" ? "ROOM_CLASH" : "SECTION_CLASH",
+      code:
+        c.kind === "teacher" ? "TEACHER_CLASH" : c.kind === "room" ? "ROOM_CLASH" : "SECTION_CLASH",
       message: `${c.kind} clash: ${c.key} has ${c.items.length} classes at the same time`,
       day: c.day,
       slot: c.slot,
@@ -187,7 +251,9 @@ export function parseRoutineTables(
   const sectionsByBatch = new Map<string, Set<string>>();
   const groupsBySection = new Map<string, Set<string>>();
   for (const t of tables) {
-    (sectionsByBatch.get(t.batch) ?? sectionsByBatch.set(t.batch, new Set()).get(t.batch)!).add(t.section);
+    (sectionsByBatch.get(t.batch) ?? sectionsByBatch.set(t.batch, new Set()).get(t.batch)!).add(
+      t.section,
+    );
   }
   for (const c of classes) {
     if (!c.labGroup) continue;
@@ -210,7 +276,8 @@ export function parseRoutineTables(
       classes: classes.length,
       labSessions: classes.filter((c) => c.labGroup).length,
       courseCodes: new Set(classes.map((c) => c.courseCode)).size,
-      facultyInitials: new Set(classes.map((c) => `${c.facultyInitial}(${c.facultyDept ?? ""})`)).size,
+      facultyInitials: new Set(classes.map((c) => `${c.facultyInitial}(${c.facultyDept ?? ""})`))
+        .size,
       rooms: new Set(classes.map((c) => `${c.building}:${c.room}`)).size,
       batches,
       teacherClashes: clashes.filter((c) => c.kind === "teacher").length,
