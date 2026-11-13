@@ -30,7 +30,7 @@ Each key has a zod schema in `packages/core/settings/schema.ts`; the settings fo
 | Key | Shape (default) | Effect |
 |---|---|---|
 | `department` | `{code:"NFE", name_en, name_bn, university}` | Names shown in the app and on exports |
-| `branding` | `{app_name:"NFE Schedule", logo_path:null, accent_dark:"#3DDC97", accent_light:"#2FA35A"}` | App name, uploaded logo (bucket `branding`), accent colours. App icon itself needs a new build. |
+| `branding` | `{app_name:"NFE Schedule", logo_path:null, accent_dark:"#3DDC97", accent_light:"#1E7A43"}` | App name, uploaded logo (bucket `branding`), accent colours. App icon itself needs a new build. |
 | `auth.signup` | `{domain_mode:"restricted", allowed_domains:["diu.edu.bd"], auto_register:true, google:true, email_otp:false, message_en, message_bn}` | Who can register: `restricted` = only listed domains (and subdomains), `any` = every email; auto registration on / off (off = admin approval); which sign-in buttons show; rejection message |
 | `auth.blocked_emails` | `[]` | Emails that may never register (private) |
 | `auth.main_admin_email` | `"..."` | Bootstrap main admin (private) |

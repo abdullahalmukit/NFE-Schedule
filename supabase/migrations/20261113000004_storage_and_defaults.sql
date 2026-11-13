@@ -32,7 +32,7 @@ create policy "branding write" on storage.objects for all to authenticated
 -- ---------------------------------------------------------------- default settings
 insert into public.app_settings (key, value, is_public, description) values
   ('department',                '{"code": "NFE", "name_en": "Nutrition and Food Engineering", "name_bn": "নিউট্রিশন অ্যান্ড ফুড ইঞ্জিনিয়ারিং", "university": "Daffodil International University"}', true, 'Department shown across the app'),
-  ('branding',                  '{"app_name": "NFE Schedule", "logo_path": null, "accent_dark": "#3DDC97", "accent_light": "#2FA35A"}', true, 'App name, logo and accent colours'),
+  ('branding',                  '{"app_name": "NFE Schedule", "logo_path": null, "accent_dark": "#3DDC97", "accent_light": "#1E7A43"}', true, 'App name, logo and accent colours'),
   ('auth.signup',               '{"domain_mode": "restricted", "allowed_domains": ["diu.edu.bd"], "auto_register": true, "google": true, "email_otp": false, "message_en": "This email address cannot be used to sign up.", "message_bn": "এই ইমেইল দিয়ে নিবন্ধন করা যাবে না।"}', true, 'Who can sign up and how: domain rule (restricted / any), auto registration, sign-in methods'),
   ('auth.blocked_emails',       '[]', false, 'Emails that may never sign up (private)'),
   ('auth.main_admin_email',     '"REPLACE_WITH_MAIN_ADMIN_EMAIL"', false, 'First sign-in with this email becomes main administrator'),

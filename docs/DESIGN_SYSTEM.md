@@ -13,7 +13,7 @@ Sources: `design/logo-sheet.png` (logo, palette) and `design/app-screens-referen
 
 **Dark (default, as in the mockups)** — background `#0C131B`, cards `#161E29`, raised `#1C2532`, borders `#263140`, text `#F1F5F9`, muted `#94A3B8`, accent mint `#3DDC97` with dark text on it, warning amber `#F4B446`, info blue `#70AFF2`.
 
-**Light** — built on the logo: background Ground `#F3F6F1`, cards white, text Ink `#14321F`, accent Leaf `#2FA35A` with white text.
+**Light** — built on the logo: background Ground `#F3F6F1`, cards white, text Ink `#14321F`, accent Leaf Dark `#1E7A43` with white text (Leaf `#2FA35A` itself is too light for text and white labels to pass AA; it stays in the logo and icons).
 
 Theme follows the system by default; Settings → Theme: System / Dark / Light.
 
