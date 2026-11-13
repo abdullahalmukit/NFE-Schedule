@@ -21,9 +21,9 @@ export function ChoiceChip({ label, selected, wide, shape = "chip", onPress }: C
       onPress={onPress}
       style={({ pressed }) => ({
         flex: wide ? 1 : undefined,
-        minWidth: 56,
+        minWidth: 48,
         height: 48,
-        paddingHorizontal: 16,
+        paddingHorizontal: 12,
         borderRadius: shape === "pill" ? 999 : t.radius.chip,
         backgroundColor: selected
           ? t.color.accent

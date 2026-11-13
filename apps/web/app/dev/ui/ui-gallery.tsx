@@ -106,6 +106,7 @@ export function UiGallery({ theme }: { theme: ThemeName }) {
               <ChoiceChip
                 key={x}
                 label={x}
+                wide
                 selected={x === section}
                 onClick={() => setSection(x)}
               />

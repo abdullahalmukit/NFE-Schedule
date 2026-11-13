@@ -17,7 +17,7 @@ export function ChoiceChip({ label, selected, wide, shape = "chip", onClick }: C
       aria-pressed={selected}
       onClick={onClick}
       className={cx(
-        "h-12 min-w-14 px-4 font-body text-body font-semibold transition-colors",
+        "h-12 min-w-12 px-3 font-body text-body font-semibold transition-colors",
         "focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-accent",
         shape === "pill" ? "rounded-full" : "rounded-chip",
         wide && "flex-1",

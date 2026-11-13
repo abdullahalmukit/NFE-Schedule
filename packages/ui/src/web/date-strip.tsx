@@ -18,7 +18,7 @@ export interface DateStripProps {
 
 export function DateStrip({ days, selected, onSelect }: DateStripProps) {
   return (
-    <div className="flex justify-between gap-1 rounded-card bg-surface p-2">
+    <div className="flex justify-between gap-0.5 rounded-card bg-surface p-1.5">
       {days.map((d) => {
         const active = d.key === selected;
         return (
@@ -29,7 +29,7 @@ export function DateStrip({ days, selected, onSelect }: DateStripProps) {
             aria-pressed={active}
             onClick={() => onSelect(d.key)}
             className={cx(
-              "flex h-14 min-w-11 flex-1 flex-col items-center justify-center rounded-xl",
+              "flex h-14 min-w-0 flex-1 flex-col items-center justify-center rounded-xl",
               active ? "bg-accent text-on-accent" : "text-text hover:bg-surface-raised",
             )}
           >

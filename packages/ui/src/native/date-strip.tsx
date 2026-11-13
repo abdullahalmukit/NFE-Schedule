@@ -24,10 +24,10 @@ export function DateStrip({ days, selected, onSelect }: DateStripProps) {
     <View
       style={{
         flexDirection: "row",
-        gap: 4,
+        gap: 2,
         backgroundColor: t.color.surface,
         borderRadius: t.radius.card,
-        padding: 8,
+        padding: 6,
       }}
     >
       {days.map((d) => {
@@ -41,7 +41,6 @@ export function DateStrip({ days, selected, onSelect }: DateStripProps) {
             onPress={() => onSelect(d.key)}
             style={{
               flex: 1,
-              minWidth: 44,
               height: 56,
               borderRadius: 12,
               backgroundColor: active ? t.color.accent : "transparent",

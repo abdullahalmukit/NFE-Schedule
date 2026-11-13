@@ -129,11 +129,12 @@ function Gallery({
               <ChoiceChip key={b} label={b} selected={b === batch} onPress={() => setBatch(b)} />
             ))}
           </Row>
-          <Row wrap>
+          <Row>
             {s.sections.map((x) => (
               <ChoiceChip
                 key={x}
                 label={x}
+                wide
                 selected={x === section}
                 onPress={() => setSection(x)}
               />

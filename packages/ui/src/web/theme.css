@@ -110,7 +110,7 @@
   color-scheme: light;
   --nfe-bg: #F3F6F1;
   --nfe-surface: #FFFFFF;
-  --nfe-surface-raised: #FFFFFF;
+  --nfe-surface-raised: #ECF1EA;
   --nfe-border: #DDE5DA;
   --nfe-text: #14321F;
   --nfe-text-muted: #4E6356;
@@ -168,7 +168,7 @@
     color-scheme: light;
     --nfe-bg: #F3F6F1;
     --nfe-surface: #FFFFFF;
-    --nfe-surface-raised: #FFFFFF;
+    --nfe-surface-raised: #ECF1EA;
     --nfe-border: #DDE5DA;
     --nfe-text: #14321F;
     --nfe-text-muted: #4E6356;
