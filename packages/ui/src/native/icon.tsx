@@ -1,28 +1,28 @@
-import {
-  ArrowLeft,
-  Bell,
-  CalendarDays,
-  ChevronDown,
-  ChevronRight,
-  CircleAlert,
-  CircleCheck,
-  DoorOpen,
-  Download,
-  FileText,
-  GraduationCap,
-  House,
-  Mail,
-  MapPin,
-  Menu,
-  Phone,
-  Plus,
-  RefreshCw,
-  Search,
-  SquareUser,
-  User,
-  Users,
-  type LucideIcon,
-} from "lucide-react-native";
+// Per-icon imports: Metro does not tree-shake, so importing from the package
+// root would bundle every lucide icon (~2 000 modules).
+import type { LucideIcon } from "lucide-react-native";
+import ArrowLeft from "lucide-react-native/icons/arrow-left";
+import Bell from "lucide-react-native/icons/bell";
+import CalendarDays from "lucide-react-native/icons/calendar-days";
+import ChevronDown from "lucide-react-native/icons/chevron-down";
+import ChevronRight from "lucide-react-native/icons/chevron-right";
+import CircleAlert from "lucide-react-native/icons/circle-alert";
+import CircleCheck from "lucide-react-native/icons/circle-check";
+import DoorOpen from "lucide-react-native/icons/door-open";
+import Download from "lucide-react-native/icons/download";
+import FileText from "lucide-react-native/icons/file-text";
+import GraduationCap from "lucide-react-native/icons/graduation-cap";
+import House from "lucide-react-native/icons/house";
+import Mail from "lucide-react-native/icons/mail";
+import MapPin from "lucide-react-native/icons/map-pin";
+import Menu from "lucide-react-native/icons/menu";
+import Phone from "lucide-react-native/icons/phone";
+import Plus from "lucide-react-native/icons/plus";
+import RefreshCw from "lucide-react-native/icons/refresh-cw";
+import Search from "lucide-react-native/icons/search";
+import SquareUser from "lucide-react-native/icons/square-user";
+import User from "lucide-react-native/icons/user";
+import Users from "lucide-react-native/icons/users";
 import type { IconName } from "../icon-names";
 
 const icons: Record<IconName, LucideIcon> = {

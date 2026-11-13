@@ -1,26 +1,36 @@
-import { StyleSheet, Text, View } from "react-native";
+import { Link } from "expo-router";
+import { View } from "react-native";
 import { DEFAULT_LOCALE, t } from "@nfe/core";
-import { tokens } from "@nfe/ui";
-
-const c = tokens.color.dark;
+import { Logo, Text, useTheme } from "@nfe/ui/native";
 
 export default function HomeScreen() {
+  const theme = useTheme();
+  const [strong = "", ...rest] = t(DEFAULT_LOCALE, "app.name").split(" ");
   return (
-    <View style={styles.screen}>
-      <Text style={styles.title}>{t(DEFAULT_LOCALE, "app.name")}</Text>
-      <Text style={styles.subtitle}>{t(DEFAULT_LOCALE, "app.tagline")}</Text>
+    <View
+      style={{
+        flex: 1,
+        alignItems: "center",
+        justifyContent: "center",
+        gap: 24,
+        padding: theme.layout.screenPadding,
+        backgroundColor: theme.color.bg,
+      }}
+    >
+      <Logo
+        strong={strong}
+        rest={rest.join(" ")}
+        tagline={t(DEFAULT_LOCALE, "app.tagline")}
+        size={48}
+      />
+      {__DEV__ ? (
+        <Link href="/dev/ui">
+          {/* Developer-only entry to the component gallery. */}
+          <Text variant="smallStrong" color="accent">
+            /dev/ui
+          </Text>
+        </Link>
+      ) : null}
     </View>
   );
 }
-
-const styles = StyleSheet.create({
-  screen: {
-    flex: 1,
-    alignItems: "center",
-    justifyContent: "center",
-    gap: 8,
-    backgroundColor: c.bg,
-  },
-  title: { color: c.text, fontSize: 24, fontWeight: "700" },
-  subtitle: { color: c.textMuted, fontSize: 14 },
-});
