@@ -24,6 +24,7 @@ const config: ExpoConfig = {
     "expo-router",
     "expo-status-bar",
     "expo-font",
+    "expo-secure-store",
     "expo-system-ui",
     [
       "expo-splash-screen",
