@@ -1,0 +1,11 @@
+@import "tailwindcss";
+@import "@nfe/ui/theme.css";
+
+/* Shared components live in packages/ui; let Tailwind see their classes. */
+@source "../../../packages/ui/src/web";
+
+body {
+  background: var(--color-bg);
+  color: var(--color-text);
+  font-family: var(--font-body);
+}

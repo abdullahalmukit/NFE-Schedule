@@ -3,3 +3,4 @@ export * from "./theme";
 export * from "./color";
 export * from "./icon-names";
 export * from "./logo";
+export * from "./showcase";

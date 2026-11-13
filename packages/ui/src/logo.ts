@@ -21,13 +21,18 @@ export const LOGO_SQUARES = [
 /** Leaf in the top-right cell: a lens from its bottom-left to its top-right corner. */
 export const LOGO_LEAF_PATH = `M${FAR} ${CELL}A${CELL} ${CELL} 0 0 1 ${FAR + CELL} 0A${CELL} ${CELL} 0 0 1 ${FAR} ${CELL}Z`;
 
+/** `default` on light backgrounds, `reversed` on Ink / dark backgrounds. */
 export type LogoVariant = "default" | "reversed";
 
-/** `default` on light backgrounds, `reversed` on Ink / dark backgrounds. */
 export function logoColors(variant: LogoVariant): { squares: string; leaf: string } {
   return variant === "reversed"
     ? { squares: tokens.brand.ground, leaf: tokens.brand.leafLight }
     : { squares: tokens.brand.ink, leaf: tokens.brand.leaf };
+}
+
+/** Logo colours that suit a theme's background. */
+export function logoVariantFor(theme: "dark" | "light"): LogoVariant {
+  return theme === "dark" ? "reversed" : "default";
 }
 
 /** Stand-alone SVG markup of the mark (for generated assets). */

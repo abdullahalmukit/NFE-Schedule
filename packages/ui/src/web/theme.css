@@ -70,6 +70,8 @@
   --nfe-purple: #B39BF5;
   --nfe-purple-soft: #2A2440;
   --nfe-card-shadow: none;
+  --nfe-logo-squares: #F3F6F1;
+  --nfe-logo-leaf: #5FD18A;
   --nfe-course-0-fill: #2D6F58;
   --nfe-course-0-on-fill: #F1F5F9;
   --nfe-course-0-tint: #234B43;
@@ -125,6 +127,8 @@
   --nfe-purple: #6D4FC2;
   --nfe-purple-soft: #ECE6FA;
   --nfe-card-shadow: 0 1px 2px rgba(20, 50, 31, 0.06);
+  --nfe-logo-squares: #14321F;
+  --nfe-logo-leaf: #2FA35A;
   --nfe-course-0-fill: #D8F0E3;
   --nfe-course-0-on-fill: #14321F;
   --nfe-course-0-tint: #D8F0E3;
@@ -181,6 +185,8 @@
     --nfe-purple: #6D4FC2;
     --nfe-purple-soft: #ECE6FA;
     --nfe-card-shadow: 0 1px 2px rgba(20, 50, 31, 0.06);
+    --nfe-logo-squares: #14321F;
+    --nfe-logo-leaf: #2FA35A;
     --nfe-course-0-fill: #D8F0E3;
     --nfe-course-0-on-fill: #14321F;
     --nfe-course-0-tint: #D8F0E3;

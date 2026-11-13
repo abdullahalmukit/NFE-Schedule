@@ -1,3 +1,4 @@
+import { logoColors, logoVariantFor } from "./logo";
 import { courseTone, COURSE_TONE_COUNT, type ThemeName } from "./theme";
 import { tokens } from "./tokens";
 
@@ -10,6 +11,12 @@ function themeVars(theme: ThemeName, indent: string): string {
   // Cards: no shadow in dark mode, a faint one in light mode (DESIGN_SYSTEM §4).
   lines.push(
     `${indent}--nfe-card-shadow: ${theme === "dark" ? "none" : "0 1px 2px rgba(20, 50, 31, 0.06)"};`,
+  );
+  // Logo mark that suits the background (reversed on dark).
+  const logo = logoColors(logoVariantFor(theme));
+  lines.push(
+    `${indent}--nfe-logo-squares: ${logo.squares};`,
+    `${indent}--nfe-logo-leaf: ${logo.leaf};`,
   );
   for (let i = 0; i < COURSE_TONE_COUNT; i++) {
     const t = courseTone(theme, i);

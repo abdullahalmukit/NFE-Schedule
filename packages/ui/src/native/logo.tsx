@@ -1,17 +1,27 @@
 import { View } from "react-native";
 import Svg, { Path, Rect } from "react-native-svg";
-import { LOGO_LEAF_PATH, LOGO_SQUARES, LOGO_VIEWBOX, logoColors, type LogoVariant } from "../logo";
+import {
+  LOGO_LEAF_PATH,
+  LOGO_SQUARES,
+  LOGO_VIEWBOX,
+  logoColors,
+  logoVariantFor,
+  type LogoVariant,
+} from "../logo";
 import { tokens } from "../tokens";
 import { FONT } from "./fonts";
 import { Text } from "./text";
+import { useTheme } from "./ui-provider";
 
 export interface LogoMarkProps {
   size?: number;
-  variant?: LogoVariant;
+  /** `auto` (default) follows the theme: reversed on dark, default on light. */
+  variant?: LogoVariant | "auto";
 }
 
-export function LogoMark({ size = 32, variant = "default" }: LogoMarkProps) {
-  const c = logoColors(variant);
+export function LogoMark({ size = 32, variant = "auto" }: LogoMarkProps) {
+  const t = useTheme();
+  const c = logoColors(variant === "auto" ? logoVariantFor(t.name) : variant);
   return (
     <Svg width={size} height={size} viewBox={`0 0 ${LOGO_VIEWBOX} ${LOGO_VIEWBOX}`}>
       {LOGO_SQUARES.map((s) => (
@@ -34,13 +44,19 @@ export interface LogoProps {
   strong: string;
   rest: string;
   tagline?: string;
-  variant?: LogoVariant;
+  /** `auto` follows the theme; `reversed` for Ink backgrounds. */
+  variant?: LogoVariant | "auto";
   size?: number;
 }
 
 /** Horizontal lockup: mark + "NFE Schedule" wordmark (+ optional tagline). */
-export function Logo({ strong, rest, tagline, variant = "default", size = 40 }: LogoProps) {
-  const color = variant === "reversed" ? tokens.brand.ground : undefined;
+export function Logo({ strong, rest, tagline, variant = "auto", size = 40 }: LogoProps) {
+  const color =
+    variant === "reversed"
+      ? tokens.brand.ground
+      : variant === "default"
+        ? tokens.brand.ink
+        : undefined;
   return (
     <View style={{ flexDirection: "row", alignItems: "center", gap: 12 }}>
       <LogoMark size={size} variant={variant} />

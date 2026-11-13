@@ -1,23 +1,16 @@
 import { DEFAULT_LOCALE, t } from "@nfe/core";
-import { tokens } from "@nfe/ui";
+import { Logo } from "@nfe/ui/web";
 
 export default function HomePage() {
-  const c = tokens.color.dark;
+  const [strong = "", ...rest] = t(DEFAULT_LOCALE, "app.name").split(" ");
   return (
-    <main
-      style={{
-        minHeight: "100vh",
-        display: "grid",
-        placeContent: "center",
-        gap: 8,
-        textAlign: "center",
-        background: c.bg,
-        color: c.text,
-        fontFamily: "system-ui, sans-serif",
-      }}
-    >
-      <h1 style={{ margin: 0 }}>{t(DEFAULT_LOCALE, "app.name")}</h1>
-      <p style={{ margin: 0, color: c.textMuted }}>{t(DEFAULT_LOCALE, "app.tagline")}</p>
+    <main className="grid min-h-screen place-content-center p-5">
+      <Logo
+        strong={strong}
+        rest={rest.join(" ")}
+        tagline={t(DEFAULT_LOCALE, "app.tagline")}
+        size={56}
+      />
     </main>
   );
 }

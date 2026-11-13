@@ -3,12 +3,16 @@ import { cx } from "./cx";
 
 export interface LogoMarkProps {
   size?: number;
-  variant?: LogoVariant;
+  /** `auto` (default) follows the theme: reversed on dark, default on light. */
+  variant?: LogoVariant | "auto";
   className?: string;
 }
 
-export function LogoMark({ size = 32, variant = "default", className }: LogoMarkProps) {
-  const c = logoColors(variant);
+export function LogoMark({ size = 32, variant = "auto", className }: LogoMarkProps) {
+  const c =
+    variant === "auto"
+      ? { squares: "var(--nfe-logo-squares)", leaf: "var(--nfe-logo-leaf)" }
+      : logoColors(variant);
   return (
     <svg
       width={size}
@@ -39,20 +43,14 @@ export interface LogoProps {
   /** Usually "Schedule"; shown regular. */
   rest: string;
   tagline?: string;
-  variant?: LogoVariant;
+  /** `auto` follows the theme; `reversed` for Ink backgrounds. */
+  variant?: LogoVariant | "auto";
   size?: number;
   className?: string;
 }
 
 /** Horizontal lockup: mark + "NFE Schedule" wordmark (+ optional tagline). */
-export function Logo({
-  strong,
-  rest,
-  tagline,
-  variant = "default",
-  size = 40,
-  className,
-}: LogoProps) {
+export function Logo({ strong, rest, tagline, variant = "auto", size = 40, className }: LogoProps) {
   return (
     <div className={cx("flex items-center gap-3", className)}>
       <LogoMark size={size} variant={variant} />
@@ -60,7 +58,11 @@ export function Logo({
         <span
           className={cx(
             "font-display leading-none",
-            variant === "reversed" ? "text-ground" : "text-text",
+            variant === "reversed"
+              ? "text-ground"
+              : variant === "default"
+                ? "text-ink"
+                : "text-text",
           )}
           style={{ fontSize: size * 0.6 }}
         >
