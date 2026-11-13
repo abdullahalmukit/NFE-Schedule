@@ -4,4 +4,5 @@ export * from "./i18n/locale-choice";
 export * from "./auth/stage";
 export * from "./settings/auth-signup";
 export * from "./storage/chunked-storage";
+export * from "./supabase/project-url";
 export type { Database, Json } from "./types/database";
