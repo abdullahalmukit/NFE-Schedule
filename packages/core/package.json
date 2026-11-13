@@ -1,0 +1,15 @@
+{
+  "name": "@nfe/core",
+  "version": "0.1.0",
+  "private": true,
+  "author": "Mukit <abdullahalmukit287@gmail.com>",
+  "type": "module",
+  "main": "src/index.ts",
+  "types": "src/index.ts",
+  "exports": { ".": "./src/index.ts" },
+  "sideEffects": false,
+  "scripts": {
+    "test": "vitest run --root ../.. packages/core",
+    "typecheck": "tsc --noEmit -p ."
+  }
+}
