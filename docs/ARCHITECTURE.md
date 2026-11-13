@@ -46,7 +46,7 @@ nfe-schedule/
 │  │  ├─ docx/                  zip + Word table reader (no dependencies) — done
 │  │  ├─ routine/               routine parser, clash check, version diff — done, tested
 │  │  └─ master/                faculty / course import: csv, xlsx, json, docx, doc, pdf
-│  └─ ui/             design tokens (design/tokens.json) -> Tailwind preset + RN theme; shared icons
+│  └─ ui/             design tokens (design/tokens.json) -> Tailwind theme CSS + RN theme; web and native components; icons
 ├─ supabase/
 │  ├─ migrations/     SQL, applied with `supabase db push`
 │  └─ functions/push-dispatch/
@@ -56,7 +56,7 @@ nfe-schedule/
 └─ docs/
 ```
 
-Tooling: pnpm workspaces, TypeScript strict, Vitest, ESLint, Prettier. UI: Tailwind CSS + shadcn/ui on web, NativeWind on mobile, both fed by `packages/ui`. Data on web: `@supabase/ssr` + TanStack Query. Icons: lucide (web) / lucide-react-native.
+Tooling: pnpm workspaces, TypeScript strict, Vitest, ESLint, Prettier. UI: Tailwind CSS v4 on web (shadcn/ui primitives added when admin dialogs and tables need them), React Native `StyleSheet` with the shared theme on mobile; both fed by `packages/ui`. Data on web: `@supabase/ssr` + TanStack Query. Icons: lucide (web) / lucide-react-native.
 
 ## 3. Main flows
 
