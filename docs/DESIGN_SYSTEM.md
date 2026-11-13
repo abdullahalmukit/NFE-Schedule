@@ -1,6 +1,6 @@
 # Design system
 
-Sources: `design/logo-sheet.png` (logo, palette) and `design/app-screens-reference.pdf` (8 screens, the visual direction). Tokens: `design/tokens.json` → `packages/ui` (Tailwind v4 theme CSS for web, theme object for React Native). Never hard-code a colour or size in a screen; use tokens.
+Sources: `design/logo-sheet.png` (logo, palette) and `design/app-screens-reference.pdf` (8 screens, the visual direction). Tokens: `design/tokens.json` → `packages/ui` (Tailwind v4 theme CSS for web, theme object for React Native). Never hard-code a colour or size in a screen; use tokens. ESLint fails on any raw hex colour (`#abc`, `#aabbcc`, `#aabbccdd`) outside `packages/ui`.
 
 ## 1. Brand
 
