@@ -75,7 +75,10 @@ export function canOpen(access: AdminAccess | null, item: AdminNavItem): boolean
 }
 
 /** Links an admin may see; areas they lack are hidden (UI only — RLS still guards the data). */
-export function adminNav(access: AdminAccess | null): { main: AdminNavItem[]; more: AdminNavItem[] } {
+export function adminNav(access: AdminAccess | null): {
+  main: AdminNavItem[];
+  more: AdminNavItem[];
+} {
   return {
     main: MAIN_LINKS.filter((i) => canOpen(access, i)),
     more: MORE_LINKS.filter((i) => canOpen(access, i)),
