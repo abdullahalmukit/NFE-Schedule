@@ -74,6 +74,12 @@ Resolution against the database (step 2 in `ARCHITECTURE.md` §3.1):
 
 `diffRoutines(before, after)` (in `diff.ts`) groups classes by section + course + label + lab group and reports `changed` (same time, different teacher or room), `moved`, `added`, `removed`, plus `affected` keys (`263-B` or `263-B/B2`). The preview lists changes per section in plain words, e.g. "263-B · 0711-1101 moved: Tuesday 11:20 → Tuesday 02:40". Publish options: effective date (default today), notify on/off, summary text (prefilled from the count of changes).
 
+As built (`routine-publish`):
+
+- **Version page** `/admin/routine/versions/<id>`: any version read-only, batch tabs and section chips, the section as a days × slots grid like the department's file. A draft links to its publish page.
+- **Publish page** `/admin/routine/versions/<id>/publish` (A-3): the draft against the version in effect today (`rtp.*` texts), counts of added / removed / moved / changed, the number of students that will be notified (`count_affected_students`, the routine admin never sees the profiles), effective date (today or later; until then students keep the current version), notify switch (off = silent fix), message, and the batches marked "graduated when published" on the import review. The server works the diff out again and calls `publish_routine_version(…, p_graduate)`: the version is published, versions no longer in effect are archived, the chosen batches become `graduated` and their students `alumni`, and one `routine_published` event targets only the affected sections / lab groups. The first publish of a semester lists no changes, only the class count.
+- **Routine page** (A-1): versions with status, source, created, published and effective dates; open any version; compare any two (`/admin/routine/compare?a=&b=`); **Restore as** a new label (`copy_version_to_draft(…, 'rollback')` → a draft copy, then its publish page). One draft per semester.
+
 ## 5. Manual editor (ADM-RT-5)
 
 - Layout matches a department table: one section at a time, days × slots; section picker with search; batch tabs.
