@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import { redirect } from "next/navigation";
-import { fill, t } from "@nfe/core";
+import { fill } from "@nfe/core";
 import { Button, Card, Logo } from "@nfe/ui/web";
 import { getAppState, pathForStage } from "@/lib/app-state";
 import { signOut } from "../actions";
@@ -11,10 +11,9 @@ export const metadata: Metadata = { title: "Waiting for approval · NFE Schedule
 
 /** N-17 Waiting for approval (AUTH-8); also shown for disabled accounts. */
 export default async function PendingPage() {
-  const { stage, locale, user } = await getAppState();
+  const { stage, user, tr } = await getAppState();
   if (stage !== "pending" && stage !== "disabled") redirect(pathForStage(stage));
   const disabled = stage === "disabled";
-  const tr = (key: Parameters<typeof t>[1]) => t(locale, key);
 
   return (
     <main className="mx-auto flex min-h-screen w-full max-w-[480px] flex-col gap-6 px-5 py-8">

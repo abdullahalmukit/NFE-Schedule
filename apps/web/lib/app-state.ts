@@ -5,9 +5,11 @@ import {
   authStage,
   parseAuthSignup,
   resolveLocale,
+  t,
   type AuthSignupSettings,
   type AuthStage,
   type Locale,
+  type MessageKey,
   type ProfileStatus,
 } from "@nfe/core";
 import { GUEST_LOCALE_COOKIE } from "./locale";
@@ -21,6 +23,10 @@ export interface AppState {
   locale: Locale;
   signup: AuthSignupSettings;
   user: { id: string; email: string; fullName: string | null; status: ProfileStatus | null } | null;
+  /** Admin text changes (`i18n_overrides`) for this language. */
+  overrides: Partial<Record<MessageKey, string>>;
+  /** Text in the visitor's language, with admin overrides applied. */
+  tr: (key: MessageKey) => string;
 }
 
 /** Who is looking, in which language, and the public sign-in settings (once per request). */
@@ -54,15 +60,30 @@ export const getAppState = cache(async (): Promise<AppState> => {
     savedLocale = profile?.locale ?? savedLocale;
   }
 
+  const locale = resolveLocale({
+    saved: savedLocale,
+    adminDefault: setting("i18n.default_locale"),
+  });
+  const { data: rows } = await supabase
+    .from("i18n_overrides")
+    .select("key, value")
+    .eq("locale", locale)
+    .is("deleted_at", null);
+  const overrides = Object.fromEntries((rows ?? []).map((r) => [r.key, r.value])) as Partial<
+    Record<MessageKey, string>
+  >;
+
   return {
     stage: authStage({
       signedIn: Boolean(user),
       status: user?.status,
       guest: cookieStore.get(GUEST_COOKIE)?.value === "1",
     }),
-    locale: resolveLocale({ saved: savedLocale, adminDefault: setting("i18n.default_locale") }),
+    locale,
     signup: parseAuthSignup(setting("auth.signup")),
     user,
+    overrides,
+    tr: (key) => t(locale, key, overrides),
   };
 });
 
