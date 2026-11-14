@@ -41,7 +41,7 @@ begin
     (select status = 'applied' and applied_at is not null and result -> 'applied' is not null
        from import_runs where id = run_f));
   perform pg_temp.ok('the import is in the audit log',
-    exists (select 1 from audit_log where entity = 'faculty' and entity_id = fac and actor_id = faculty_adm));
+    exists (select 1 from audit_log where entity = 'faculty' and entity_id = fac::text and actor_id = faculty_adm));
 
   err := null;
   perform pg_temp.login(faculty_adm);
