@@ -30,3 +30,31 @@ export function showValue(value: unknown): string {
   if (typeof value === "string") return value;
   return JSON.stringify(value);
 }
+
+/** Tables with the audit trigger (supabase/migrations/..._security.sql), for the A-18 filter. */
+export const AUDITED_TABLES = [
+  "academic_events",
+  "admin_invites",
+  "admin_permissions",
+  "app_releases",
+  "app_settings",
+  "batches",
+  "buildings",
+  "calendar_days",
+  "class_exceptions",
+  "class_slots",
+  "courses",
+  "cr_assignments",
+  "cr_requests",
+  "departments",
+  "faculty",
+  "feature_flags",
+  "issue_reports",
+  "lab_groups",
+  "notices",
+  "rooms",
+  "routine_versions",
+  "sections",
+  "semesters",
+  "time_slots",
+] as const;
