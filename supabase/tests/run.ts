@@ -43,10 +43,24 @@ for (const file of files) {
   try {
     const out = execFileSync(
       "pnpm",
-      ["exec", "supabase", "db", "query", "--remote", "--yes", "-o", "json", "-f", path],
+      [
+        "exec",
+        "supabase",
+        "db",
+        "query",
+        "--remote",
+        "--yes",
+        "--output-format",
+        "json",
+        "-f",
+        path,
+      ],
       { encoding: "utf8", stdio: ["ignore", "pipe", "pipe"], shell: process.platform === "win32" },
     );
-    const json = JSON.parse(out.slice(out.indexOf("{"))) as { rows?: Row[] } | Row[];
+    // The CLI prints either a bare array of rows or {"rows": [...], ...}; text may come before it.
+    const starts = [out.indexOf("{"), out.indexOf("[")].filter((i) => i >= 0);
+    if (!starts.length) throw new Error("Supabase CLI returned no JSON");
+    const json = JSON.parse(out.slice(Math.min(...starts))) as { rows?: Row[] } | Row[];
     rows = Array.isArray(json) ? json : (json.rows ?? []);
   } catch (e) {
     const err = e as { stdout?: string; stderr?: string; message: string };

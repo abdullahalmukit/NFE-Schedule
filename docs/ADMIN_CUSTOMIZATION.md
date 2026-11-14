@@ -25,7 +25,7 @@ Rule for the whole codebase: **if a value could differ between semesters or depa
 
 ## 2. Settings keys (`app_settings`, edited in Settings)
 
-Each key has a zod schema, a default, a visibility and a list of form fields in `SETTINGS` (`packages/core/src/settings/schema.ts`); the admin form (Admin → Settings) is built from those fields and every save is validated with the schema, so adding a key means adding one entry there (plus its texts in `en` / `bn`) and putting it on a page in `SETTINGS_PAGES`. Defaults are inserted by migration `..._storage_and_defaults.sql`; a test checks every seeded value against its schema. `parser.routine` is edited on Settings → Routine format, which arrives with the routine import.
+Each key has a zod schema, a default, a visibility and a list of form fields in `SETTINGS` (`packages/core/src/settings/schema.ts`); the admin form (Admin → Settings) is built from those fields and every save is validated with the schema, so adding a key means adding one entry there (plus its texts in `en` / `bn`) and putting it on a page in `SETTINGS_PAGES`. Defaults are inserted by migration `..._storage_and_defaults.sql`; a test checks every seeded value against its schema. `parser.routine` is edited on Settings → Routine format by routine or settings admins (validated with `routineRulesSetting` in `packages/core/routine/parser-rules.ts`, saved through `set_routine_rules`), with a "Test on a file" button.
 
 | Key | Shape (default) | Effect |
 |---|---|---|
