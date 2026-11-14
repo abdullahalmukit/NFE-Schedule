@@ -2318,6 +2318,7 @@ export type Database = {
         Args: { p_lab_group?: string; p_section: string }
         Returns: undefined
       }
+      claim_main_admin: { Args: never; Returns: boolean }
       daily_maintenance: { Args: never; Returns: string }
       event_recipients: { Args: { p_event: string }; Returns: string[] }
       has_admin_area: { Args: { area: string }; Returns: boolean }

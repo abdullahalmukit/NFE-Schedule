@@ -100,3 +100,30 @@ begin
   perform pg_temp.logout();
   perform pg_temp.ok('former main admin cannot manage admins any more', err like 'Only the main%', coalesce(err, 'revoked'));
 end $$;
+
+-- AUTH-3 follow-up: claim_main_admin() after the email setting is corrected.
+do $$
+declare early uuid; other uuid; claimed boolean;
+begin
+  update admin_permissions set revoked_at = now() where is_main and revoked_at is null;
+  early := pg_temp.new_user('signed.up.early@example.test');   -- not the main email at sign-up
+  other := pg_temp.new_user('someone.else@example.test');
+  update app_settings set value = to_jsonb('signed.up.early@example.test'::text)
+   where key = 'auth.main_admin_email';
+
+  perform pg_temp.login(other);
+  claimed := public.claim_main_admin();
+  perform pg_temp.logout();
+  perform pg_temp.ok('claim refused for a different email', not claimed);
+
+  perform pg_temp.login(early);
+  claimed := public.claim_main_admin();
+  perform pg_temp.logout();
+  perform pg_temp.ok('matching account claims the main role when none exists',
+    claimed and exists (select 1 from admin_permissions where user_id = early and is_main and revoked_at is null));
+
+  perform pg_temp.login(early);
+  claimed := public.claim_main_admin();
+  perform pg_temp.logout();
+  perform pg_temp.ok('no second claim once a main admin exists', not claimed);
+end $$;

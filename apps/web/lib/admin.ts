@@ -22,6 +22,8 @@ export const getAdminContext = cache(async (): Promise<AdminContext> => {
   if (state.stage === "pending" || state.stage === "disabled") redirect("/pending");
 
   const supabase = await createClient();
+  // The main admin whose email was set after they signed up claims the role here (AUTH-3).
+  await supabase.rpc("claim_main_admin");
   const { data } = await supabase
     .from("admin_permissions")
     .select("is_main, areas, revoked_at")
