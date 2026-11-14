@@ -14,7 +14,7 @@
 | faculty | `^(?<initial>[A-Z]{1,6})(?:\s*\((?<dept>[A-Z]{2,6})\))?$` | `DAMR`, `NI(ITM)` |
 | room | `^(?<building>[A-Za-z][A-Za-z0-9-]*)\s*:\s*(?<room>[A-Za-z0-9-]+)$` | `AB-1: 304`, `AB: 101`, `Gym: 407` |
 
-Code: `packages/parser/src/routine/` — `rules.ts` (defaults and types), `parse-routine.ts`, `clashes.ts`, `diff.ts`. Test: `packages/parser/test/routine-fall-2026-v5.test.ts` (run `npx tsx packages/parser/test/routine-fall-2026-v5.test.ts`; move to Vitest when the workspace is set up).
+Code: `packages/parser/src/routine/` — `rules.ts` (defaults and types), `parse-routine.ts`, `clashes.ts`, `diff.ts`. Test: `packages/parser/test/routine-fall-2026-v5.test.ts` (Vitest).
 
 ## 2. Known data in Fall 2026 V5
 
@@ -59,9 +59,26 @@ Resolution against the database (step 2 in `ARCHITECTURE.md` §3.1):
 | Building / room not in `rooms` | Created on apply; floor from `room.floor_rule`, type `lab` if only lab cells use it (editable) |
 | Time slots differ from the semester's | Suggestion to update the semester's time slots |
 
+### Review screen as built (`/admin/routine/import`, routine-import)
+
+- **Upload**: semester (active one preselected), version label (unique per semester), .docx. **Read tables** happens at once; the review opens at `?run=<id>` and can be left and continued from the Routine page.
+- **Stats** as mockup 8; **Checks** (teacher / room double-booked, unreadable cells, rooms found).
+- **Faculty initials without details** / **Course codes without titles**: initials without a teacher record or without a name, codes without a course or without a title; *New* marks the ones that do not exist yet. Names, designations, titles and credits typed here are saved to master data at once (faculty / courses area); "Import from a file" opens the faculty / course import. Records still missing are created bare (initial + department, code + detected type) when the draft is saved.
+- **Batches in this file** with *New* and *Graduating*. A graduating batch gets "Mark graduated when published"; the choice is kept in `result.overrides.graduate` and carried out by the publish step (`routine-publish`), never on import.
+- **Warnings**: cross-section lab groups are decided per table (*Keep as written* / *Rename*); other warnings are accepted one by one. **Problems** (errors) must be fixed in the file and uploaded again.
+- **Class times**: created for a semester without times; when they differ, the admin keeps the semester's or takes the file's.
+- **Semester changes** (ADM-RT-10): left teacher appearing again, teacher without classes, guest teacher, new batch, batch without a table. Nothing is applied silently.
+- **Save as draft** is enabled when nothing blocks it (problems, undecided warnings, undecided class times). It writes a draft version (`apply_routine_import`); students see nothing until it is published. A draft can be discarded on the Routine page.
+
 ## 4. Diff and publish
 
 `diffRoutines(before, after)` (in `diff.ts`) groups classes by section + course + label + lab group and reports `changed` (same time, different teacher or room), `moved`, `added`, `removed`, plus `affected` keys (`263-B` or `263-B/B2`). The preview lists changes per section in plain words, e.g. "263-B · 0711-1101 moved: Tuesday 11:20 → Tuesday 02:40". Publish options: effective date (default today), notify on/off, summary text (prefilled from the count of changes).
+
+As built (`routine-publish`):
+
+- **Version page** `/admin/routine/versions/<id>`: any version read-only, batch tabs and section chips, the section as a days × slots grid like the department's file. A draft links to its publish page.
+- **Publish page** `/admin/routine/versions/<id>/publish` (A-3): the draft against the version in effect today (`rtp.*` texts), counts of added / removed / moved / changed, the number of students that will be notified (`count_affected_students`, the routine admin never sees the profiles), effective date (today or later; until then students keep the current version), notify switch (off = silent fix), message, and the batches marked "graduated when published" on the import review. The server works the diff out again and calls `publish_routine_version(…, p_graduate)`: the version is published, versions no longer in effect are archived, the chosen batches become `graduated` and their students `alumni`, and one `routine_published` event targets only the affected sections / lab groups. The first publish of a semester lists no changes, only the class count.
+- **Routine page** (A-1): versions with status, source, created, published and effective dates; open any version; compare any two (`/admin/routine/compare?a=&b=`); **Restore as** a new label (`copy_version_to_draft(…, 'rollback')` → a draft copy, then its publish page). One draft per semester.
 
 ## 5. Manual editor (ADM-RT-5)
 

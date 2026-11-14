@@ -2307,6 +2307,10 @@ export type Database = {
         Args: { p_plan: Json; p_run: string }
         Returns: Json
       }
+      apply_routine_import: {
+        Args: { p_plan: Json; p_run: string }
+        Returns: Json
+      }
       archive_superseded_versions: {
         Args: { p_semester: string }
         Returns: undefined
@@ -2323,6 +2327,18 @@ export type Database = {
         Returns: undefined
       }
       claim_main_admin: { Args: never; Returns: boolean }
+      copy_version_to_draft: {
+        Args: {
+          p_from: string
+          p_label: string
+          p_source: Database["public"]["Enums"]["version_source"]
+        }
+        Returns: string
+      }
+      count_affected_students: {
+        Args: { p_lab_groups: string[]; p_sections: string[] }
+        Returns: number
+      }
       daily_maintenance: { Args: never; Returns: string }
       event_recipients: { Args: { p_event: string }; Returns: string[] }
       has_admin_area: { Args: { area: string }; Returns: boolean }
@@ -2353,6 +2369,7 @@ export type Database = {
           p_affected_lab_group_ids?: string[]
           p_affected_section_ids?: string[]
           p_effective_from: string
+          p_graduate?: string[]
           p_notify: boolean
           p_summary?: string
           p_version: string
@@ -2374,6 +2391,7 @@ export type Database = {
         Args: { p_areas: string[]; p_user: string }
         Returns: undefined
       }
+      set_routine_rules: { Args: { p_value: Json }; Returns: undefined }
       signup_settings: { Args: never; Returns: Json }
       sync_pull: { Args: { p_since?: number }; Returns: Json }
       teaches_section: { Args: { p_section: string }; Returns: boolean }
