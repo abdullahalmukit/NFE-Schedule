@@ -24,7 +24,7 @@ Status legend: ☐ to do · ◐ in progress · ☑ done (update this file in the
 | ☑ `master-data-manual` | Courses, faculty, departments, batches, rooms pages (ADM-MD-4, ADM-MD-5) |
 | ☑ `master-data-import` | Readers for csv / xlsx / json / docx / doc / pdf, import wizard, presets, templates download (ADM-MD-1…3) |
 | ☑ `routine-import` | Upload, parse route, review screen (mockup 8), warnings & overrides, apply to draft (ADM-RT-1, ADM-RT-2, ADM-RT-10, ADM-RT-11) |
-| ☐ `routine-publish` | Diff preview, publish dialog, version history, rollback (ADM-RT-3, ADM-RT-4, ADM-RT-7) |
+| ◐ `routine-publish` | Diff preview, publish dialog, version history, rollback (ADM-RT-3, ADM-RT-4, ADM-RT-7) |
 | ☐ `routine-editor` | Manual grid editor with drafts, live clash check, silent fix, build from scratch (ADM-RT-5, ADM-RT-6) |
 | ☐ `admin-views` | Teacher / room views, load, free rooms (ADM-RT-8), admin exceptions (ADM-RT-9) |
 
