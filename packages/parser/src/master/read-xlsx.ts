@@ -42,3 +42,19 @@ export function readXlsx(file: Uint8Array, score: HeaderScore, sheet?: string): 
   if (!best) throw new MasterReadError("empty");
   return { ...best, sheets };
 }
+
+/** One-sheet workbook for the downloadable templates (ADM-MD-3). */
+export function writeXlsx(
+  table: { headers: string[]; rows: string[][] },
+  sheetName: string,
+): Uint8Array {
+  const book = XLSX.utils.book_new();
+  const sheet = XLSX.utils.aoa_to_sheet([table.headers, ...table.rows]);
+  // Column width from the header and the first rows, at most 40 characters.
+  const sample = table.rows.slice(0, 200);
+  sheet["!cols"] = table.headers.map((h, c) => ({
+    wch: Math.min(40, Math.max(h.length, ...sample.map((r) => (r[c] ?? "").length)) + 2),
+  }));
+  XLSX.utils.book_append_sheet(book, sheet, sheetName);
+  return new Uint8Array(XLSX.write(book, { type: "array", bookType: "xlsx" }) as ArrayBuffer);
+}

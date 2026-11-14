@@ -5,6 +5,7 @@ import {
   buildPreview,
   headerKey,
   headerScore,
+  importObjectPath,
   invalidRowsCsv,
   presetMapping,
   tableToJson,
@@ -296,5 +297,13 @@ describe("templates and CSV", () => {
     });
     // The template imports back: informational columns are not matched.
     expect(Object.keys(autoMatch("courses", t.headers))).not.toContain("detected_type");
+  });
+});
+
+describe("upload path", () => {
+  it("keeps storage keys ASCII and the extension", () => {
+    expect(importObjectPath("r1", "Faculty List (v2).XLSX")).toBe("r1/Faculty-List-v2.xlsx");
+    expect(importObjectPath("r1", "শিক্ষক তালিকা.pdf")).toBe("r1/file.pdf");
+    expect(importObjectPath("r1", "noext")).toBe("r1/noext");
   });
 });

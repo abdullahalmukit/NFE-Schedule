@@ -2303,6 +2303,7 @@ export type Database = {
         Args: { p_message?: string; p_phone?: string; p_section: string }
         Returns: string
       }
+      apply_master_import: { Args: { p_plan: Json; p_run: string }; Returns: Json }
       archive_superseded_versions: {
         Args: { p_semester: string }
         Returns: undefined

@@ -14,6 +14,7 @@ import {
   MasterReadError,
   readMasterFile,
   type MasterFileType,
+  writeXlsx,
 } from "../../src/master";
 
 const here = (p: string) => fileURLToPath(new URL(p, import.meta.url));
@@ -143,9 +144,14 @@ describe("csv reader", () => {
   });
 
   it("detects ; and tab, removes the BOM and keeps quoted commas", async () => {
-    const semi = await readMasterFile(text('﻿Code;Title\r\n0531-1103;"Food, Chemistry"'), "csv", {
-      score: courseScore,
-    });
+    const bom = String.fromCharCode(0xfeff);
+    const semi = await readMasterFile(
+      text(`${bom}Code;Title\r\n0531-1103;"Food, Chemistry"`),
+      "csv",
+      {
+        score: courseScore,
+      },
+    );
     expect(semi.headers).toEqual(["Code", "Title"]);
     expect(semi.rows).toEqual([["0531-1103", "Food, Chemistry"]]);
     const tab = await readMasterFile(text("Code\tCredit\n0531-1104\t1.5\n\n"), "csv", {
@@ -194,5 +200,14 @@ describe("json reader", () => {
     await expect(readMasterFile(text("{"), "json", { score: courseScore })).rejects.toThrow(
       "badJson",
     );
+  });
+});
+
+describe("xlsx template", () => {
+  it("writes a sheet that reads back the same", async () => {
+    const table = { headers: ["code", "title"], rows: [["0531-1103", "Food Chemistry"]] };
+    const file = writeXlsx(table, "Courses");
+    const back = await readMasterFile(file, "xlsx", { score: courseScore });
+    expect(back).toMatchObject({ ...table, source: { sheet: "Courses" } });
   });
 });

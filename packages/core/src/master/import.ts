@@ -628,3 +628,27 @@ export function tableToJson(table: ImportTable): Record<string, string>[] {
     ),
   );
 }
+
+/** Largest file the import accepts (bytes). */
+export const MAX_IMPORT_BYTES = 10 * 1024 * 1024;
+
+/**
+ * Path of an uploaded file in the private `imports` bucket: "<runId>/<name>".
+ * Storage keys are kept ASCII ("শিক্ষক তালিকা.xlsx" → "file.xlsx"); the original
+ * name is stored in `import_runs.file_name`.
+ */
+export function importObjectPath(runId: string, fileName: string): string {
+  const dot = fileName.lastIndexOf(".");
+  const ext =
+    dot > 0
+      ? fileName
+          .slice(dot + 1)
+          .toLowerCase()
+          .replace(/[^a-z0-9]/g, "")
+      : "";
+  const base = (dot > 0 ? fileName.slice(0, dot) : fileName)
+    .replace(/[^A-Za-z0-9_-]+/g, "-")
+    .replace(/^-+|-+$/g, "")
+    .slice(0, 60);
+  return `${runId}/${base || "file"}${ext ? `.${ext}` : ""}`;
+}

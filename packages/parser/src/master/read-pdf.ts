@@ -48,7 +48,6 @@ export async function readPdf(file: Uint8Array, score: HeaderScore): Promise<Mas
   }
 }
 
-
 async function readLines(doc: PDFDocumentProxy, score: HeaderScore): Promise<MasterTable> {
   const lines: Line[] = [];
   for (let p = 1; p <= doc.numPages; p++) {

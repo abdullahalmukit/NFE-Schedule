@@ -11,6 +11,7 @@ import { MasterReadError, type HeaderScore, type MasterTable } from "./table";
 
 export * from "./table";
 export { keyValueTable } from "./read-word";
+export { writeXlsx } from "./read-xlsx";
 
 export const MASTER_FILE_TYPES = ["csv", "xlsx", "xls", "json", "docx", "doc", "pdf"] as const;
 export type MasterFileType = (typeof MASTER_FILE_TYPES)[number];
