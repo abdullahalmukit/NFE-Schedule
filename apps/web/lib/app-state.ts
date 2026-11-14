@@ -1,5 +1,6 @@
 import "server-only";
 import { cookies } from "next/headers";
+import { cache } from "react";
 import {
   authStage,
   parseAuthSignup,
@@ -22,8 +23,8 @@ export interface AppState {
   user: { id: string; email: string; fullName: string | null; status: ProfileStatus | null } | null;
 }
 
-/** Who is looking, in which language, and the public sign-in settings. */
-export async function getAppState(): Promise<AppState> {
+/** Who is looking, in which language, and the public sign-in settings (once per request). */
+export const getAppState = cache(async (): Promise<AppState> => {
   const supabase = await createClient();
   const cookieStore = await cookies();
 
@@ -63,7 +64,7 @@ export async function getAppState(): Promise<AppState> {
     signup: parseAuthSignup(setting("auth.signup")),
     user,
   };
-}
+});
 
 /** Where a signed-in or guest visitor belongs after signing in. */
 export function pathForStage(stage: AuthStage): string {
