@@ -81,6 +81,12 @@ Manual edits (ADM-RT-5) skip steps 1–4: the editor creates a draft version cop
 
 ### 3.4 App updates — see `docs/APP_UPDATES.md`.
 
+### 3.6 Admin panel shell (`apps/web/app/admin/`)
+
+- `layout.tsx` checks the signed-in user's own `admin_permissions` row (`lib/admin.ts`); no areas → "No admin access". The top bar shows only the links for the admin's areas (`adminNav()` in `packages/core/admin/access.ts`); Admins and Audit log only for the main admin. Hiding links is convenience only: every function and table checks the area again in the database.
+- Pages: A-0 dashboard (`admin_dashboard()` counts), A-17 Admins (server actions → `invite_admin` / `set_admin_areas` / `revoke_admin` / `cancel_admin_invite` / `transfer_main_admin`), A-18 Audit log (filters, before / after per field). Sections built by later branches show a "coming" page from `admin/[section]`; a real page at `admin/<section>` replaces it.
+- Opening the panel (and every sign-in) calls `claim_main_admin()`, so a main admin whose email was set after they signed up gets the role.
+
 ### 3.5 Sign-in (AUTH-1…3, AUTH-6, AUTH-8, AUTH-9)
 
 - **Who may register** is decided only on the server: the "Before User Created" hook (`hook_before_user_created`) applies `auth.signup` (restricted domains or any email, blocked emails; invited people always allowed). The apps read the public `auth.signup` setting just to show the right buttons, the domain hint and the admin's rejection message in Bangla or English (`packages/core/settings/auth-signup.ts`).
