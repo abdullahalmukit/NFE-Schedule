@@ -2297,6 +2297,8 @@ export type Database = {
     Functions: {
       active_semester_id: { Args: never; Returns: string }
       add_touch_trigger: { Args: { tbl: unknown }; Returns: undefined }
+      admin_area_names: { Args: never; Returns: string[] }
+      admin_dashboard: { Args: never; Returns: Json }
       apply_for_cr: {
         Args: { p_message?: string; p_phone?: string; p_section: string }
         Returns: string
@@ -2310,6 +2312,8 @@ export type Database = {
         Returns: string
       }
       can_post_to_section: { Args: { p_section: string }; Returns: boolean }
+      cancel_admin_invite: { Args: { p_email: string }; Returns: undefined }
+      check_admin_areas: { Args: { p_areas: string[] }; Returns: undefined }
       choose_section: {
         Args: { p_lab_group?: string; p_section: string }
         Returns: undefined
@@ -2318,6 +2322,10 @@ export type Database = {
       event_recipients: { Args: { p_event: string }; Returns: string[] }
       has_admin_area: { Args: { area: string }; Returns: boolean }
       hook_before_user_created: { Args: { event: Json }; Returns: Json }
+      invite_admin: {
+        Args: { p_areas: string[]; p_email: string }
+        Returns: string
+      }
       is_active_member: { Args: never; Returns: boolean }
       is_any_admin: { Args: never; Returns: boolean }
       is_cr_of: { Args: { p_section: string }; Returns: boolean }
@@ -2354,10 +2362,16 @@ export type Database = {
         Args: { p_approve: boolean; p_user: string }
         Returns: undefined
       }
+      revoke_admin: { Args: { p_user: string }; Returns: undefined }
       revoke_cr: { Args: { p_assignment: string }; Returns: undefined }
+      set_admin_areas: {
+        Args: { p_areas: string[]; p_user: string }
+        Returns: undefined
+      }
       signup_settings: { Args: never; Returns: Json }
       sync_pull: { Args: { p_since?: number }; Returns: Json }
       teaches_section: { Args: { p_section: string }; Returns: boolean }
+      transfer_main_admin: { Args: { p_user: string }; Returns: undefined }
       version_in_effect: {
         Args: { p_date?: string; p_semester: string }
         Returns: string
