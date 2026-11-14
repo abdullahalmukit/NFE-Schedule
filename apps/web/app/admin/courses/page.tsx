@@ -4,6 +4,7 @@ import { Card, cx, Panel, Pill } from "@nfe/ui/web";
 import { getAdminContext } from "@/lib/admin";
 import { createClient } from "@/lib/supabase/server";
 import { ActionForm } from "../_components/action-form";
+import { ImportActions } from "../_components/import-page";
 import { Hidden, SelectField, TextField } from "../_components/fields";
 import { ListToolbar } from "../_components/list-toolbar";
 import { saveCourse, setCourseStatus } from "./actions";
@@ -51,7 +52,7 @@ export default async function CoursesPage({
     <div className="flex flex-col gap-6">
       <div>
         <h1 className="font-display text-display font-bold">{tr("admin.nav.courses")}</h1>
-        <p className="mt-1 font-body text-small text-text-muted">{tr("md.importSoon")}</p>
+        <ImportActions kind="courses" />
       </div>
       <div className="grid gap-6 xl:grid-cols-[1fr_380px]">
         <Panel title={fill(tr("course.count"), { n: list.length })}>
