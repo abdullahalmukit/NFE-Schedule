@@ -472,7 +472,8 @@ export const bn: Record<MessageKey, string> = {
   "imp.err.unsupported": "এই ধরনের ফাইল ইমপোর্ট করা যায় না। CSV, Excel, JSON, Word বা PDF দিন।",
   "imp.err.badFile": "ফাইলটি খোলা যায়নি। এটি নষ্ট বা পাসওয়ার্ড দেওয়া হতে পারে।",
   "imp.err.badJson": "এই JSON ফাইলটি ঠিক নেই। উদাহরণের মতো রেকর্ডের তালিকা দিন।",
-  "imp.err.empty": "ফাইলে কোনো টেবিল পাওয়া যায়নি।",
+  "imp.err.empty":
+    "ফাইলে কোনো তালিকা পাওয়া যায়নি। Initial বা Course code-এর মতো কলামসহ একটি শিরোনাম সারি থাকতে হবে। রুটিনের ফাইলটি রুটিন অংশে ইমপোর্ট করা হয়।",
   "imp.err.scan": "এই PDF-টি স্ক্যান করা; CSV বা Excel আপলোড করুন।",
   "imp.err.tooManyRows": "ফাইলে {n}টির বেশি সারি আছে।",
   "imp.err.generic": "কিছু একটা সমস্যা হয়েছে। আবার চেষ্টা করুন।",

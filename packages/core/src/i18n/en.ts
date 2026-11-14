@@ -474,7 +474,8 @@ export const en = {
   "imp.err.unsupported": "This file type cannot be imported. Use CSV, Excel, JSON, Word or PDF.",
   "imp.err.badFile": "The file could not be opened. It may be damaged or password-protected.",
   "imp.err.badJson": "This JSON file is not valid. Use a list of records like the example.",
-  "imp.err.empty": "No table was found in the file.",
+  "imp.err.empty":
+    "No list was found in the file. It needs a header row with a column such as Initial or Course code. The routine file itself is imported under Routine.",
   "imp.err.scan": "This PDF is a scan; please upload CSV or Excel.",
   "imp.err.tooManyRows": "The file has more than {n} rows.",
   "imp.err.generic": "Something went wrong. Try again.",
