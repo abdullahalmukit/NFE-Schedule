@@ -9,3 +9,4 @@ export type { Database, Json } from "./types/database";
 export * from "./admin/access";
 export * from "./admin/audit-diff";
 export * from "./admin/errors";
+export * from "./settings/schema";
