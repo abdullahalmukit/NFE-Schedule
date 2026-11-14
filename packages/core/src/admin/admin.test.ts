@@ -1,5 +1,5 @@
 import { describe, expect, it } from "vitest";
-import { ADMIN_AREAS, adminNav, canOpen, findAdminNavItem, hasArea } from "./access";
+import { ADMIN_AREAS, adminNav, canOpen, findAdminNavItem, hasArea, settingsMenu } from "./access";
 import { changedFields, showValue } from "./audit-diff";
 import { adminErrorKey } from "./errors";
 
@@ -80,5 +80,33 @@ describe("admin errors", () => {
     expect(adminErrorKey("Enter a valid email address")).toBe("admins.err.email");
     expect(adminErrorKey("Choose a signed-up, active account")).toBe("admins.err.account");
     expect(adminErrorKey("boom")).toBe("admins.err.generic");
+  });
+});
+
+describe("settings link and menu", () => {
+  const more = (areas: string[]) => slugs(adminNav({ isMain: false, areas }).more);
+  const menu = (areas: string[]) => settingsMenu({ isMain: false, areas }).map((m) => m.slug);
+
+  it("shows Settings to admins of the settings, routine or calendar area", () => {
+    expect(more(["settings"])).toContain("settings");
+    expect(more(["routine"])).toContain("settings");
+    expect(more(["calendar"])).toContain("settings");
+    expect(more(["notices", "cr"])).not.toContain("settings");
+  });
+
+  it("lists only the pages the admin may open", () => {
+    expect(menu(["routine"])).toEqual(["semesters"]);
+    expect(menu(["calendar"])).toEqual(["calendar"]);
+    expect(menu(["routine", "calendar"])).toEqual(["semesters", "calendar"]);
+    expect(menu(["settings"])).not.toContain("semesters");
+    expect(menu(["settings"])).toContain("texts");
+    expect(menu(["notices"])).toEqual([]);
+  });
+
+  it("links the calendar to its own page and everything else under /admin/settings", () => {
+    const all = settingsMenu({ isMain: true, areas: [] });
+    expect(all.find((m) => m.slug === "calendar")?.href).toBe("/admin/calendar");
+    expect(all.find((m) => m.slug === "week")?.href).toBe("/admin/settings/week");
+    expect(all.every((m) => m.href.startsWith("/admin/"))).toBe(true);
   });
 });

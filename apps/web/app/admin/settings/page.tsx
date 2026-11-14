@@ -1,10 +1,9 @@
 import { redirect } from "next/navigation";
-import { hasArea } from "@nfe/core";
+import { settingsMenu } from "@nfe/core";
 import { getAdminContext } from "@/lib/admin";
-import { SETTINGS_MENU } from "./pages";
 
+/** Opens the first Settings page this admin may use (the calendar for calendar-only admins). */
 export default async function SettingsIndex() {
   const { access } = await getAdminContext();
-  const first = SETTINGS_MENU.find((m) => hasArea(access, m.area));
-  redirect(`/admin/settings/${first?.slug ?? "general"}`);
+  redirect(settingsMenu(access)[0]?.href ?? "/admin");
 }

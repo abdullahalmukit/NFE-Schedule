@@ -1,17 +1,13 @@
 import type { ReactNode } from "react";
-import { hasArea } from "@nfe/core";
+import { settingsMenu } from "@nfe/core";
 import { Card } from "@nfe/ui/web";
 import { getAdminContext } from "@/lib/admin";
-import { SETTINGS_MENU } from "./pages";
 import { SettingsNav } from "./settings-nav";
 
-/** A-16 Settings: side menu of sub-pages the admin may open. */
+/** A-16 Settings: side menu with only the pages this admin may open. */
 export default async function SettingsLayout({ children }: { children: ReactNode }) {
   const { access, tr } = await getAdminContext();
-  const items = SETTINGS_MENU.filter((m) => hasArea(access, m.area)).map((m) => ({
-    href: `/admin/settings/${m.slug}`,
-    label: tr(m.title),
-  }));
+  const items = settingsMenu(access).map((m) => ({ href: m.href, label: tr(m.title) }));
   if (items.length === 0) {
     return (
       <Card>
