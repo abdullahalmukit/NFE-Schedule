@@ -12,9 +12,13 @@
   "sideEffects": false,
   "scripts": {
     "test": "vitest run --root ../.. packages/core",
-    "typecheck": "tsc --noEmit -p ."
+    "typecheck": "tsc --noEmit -p . && tsc --noEmit -p test"
   },
   "devDependencies": {
-    "@supabase/supabase-js": "^2.119.0"
+    "@supabase/supabase-js": "^2.119.0",
+    "@types/node": "^24"
+  },
+  "dependencies": {
+    "zod": "^4.6.7"
   }
 }

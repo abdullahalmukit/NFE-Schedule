@@ -1,7 +1,7 @@
 import { describe, expect, it } from "vitest";
 import { bn } from "./bn";
 import { en } from "./en";
-import { DEFAULT_LOCALE, FALLBACK_LOCALE, isLocale, resolveLocale, t } from "./index";
+import { DEFAULT_LOCALE, FALLBACK_LOCALE, fill, isLocale, resolveLocale, t } from "./index";
 import { saveLocaleChoice } from "./locale-choice";
 
 describe("i18n", () => {
@@ -72,5 +72,14 @@ describe("saveLocaleChoice", () => {
 
   it("refuses unknown languages", async () => {
     await expect(saveLocaleChoice("fr" as "en", stores(null))).rejects.toThrow();
+  });
+});
+
+describe("fill", () => {
+  it("replaces known placeholders only", () => {
+    expect(fill("Use your {domains} email", { domains: "@diu.edu.bd" })).toBe(
+      "Use your @diu.edu.bd email",
+    );
+    expect(fill("{a} {b}", { a: 1 })).toBe("1 {b}");
   });
 });

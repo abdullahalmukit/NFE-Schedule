@@ -1,3 +1,5 @@
+import { supabaseProjectUrl } from "@nfe/core";
+
 /** Public Supabase settings (safe in the browser). Values come from apps/web/.env.local or Vercel. */
 export function publicSupabaseEnv(): { url: string; anonKey: string } {
   // Written out in full so Next.js can inline them into the browser bundle.
@@ -8,5 +10,6 @@ export function publicSupabaseEnv(): { url: string; anonKey: string } {
       "Missing NEXT_PUBLIC_SUPABASE_URL or NEXT_PUBLIC_SUPABASE_ANON_KEY (apps/web/.env.local)",
     );
   }
-  return { url, anonKey };
+  // Only the project origin; a pasted ".../rest/v1/" would break every Auth call.
+  return { url: supabaseProjectUrl(url), anonKey };
 }

@@ -2,7 +2,7 @@ import "react-native-url-polyfill/auto";
 import { createClient } from "@supabase/supabase-js";
 import * as SecureStore from "expo-secure-store";
 import { AppState } from "react-native";
-import { chunkedStorage, type Database } from "@nfe/core";
+import { chunkedStorage, supabaseProjectUrl, type Database } from "@nfe/core";
 
 const url = process.env.EXPO_PUBLIC_SUPABASE_URL;
 const anonKey = process.env.EXPO_PUBLIC_SUPABASE_ANON_KEY;
@@ -17,7 +17,7 @@ if (!url || !anonKey) {
  * kept in the device keychain / keystore via expo-secure-store, split into
  * chunks because a session is larger than one secure-store value should be.
  */
-export const supabase = createClient<Database>(url, anonKey, {
+export const supabase = createClient<Database>(supabaseProjectUrl(url), anonKey, {
   auth: {
     storage: chunkedStorage(SecureStore),
     autoRefreshToken: true,

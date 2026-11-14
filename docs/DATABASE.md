@@ -16,6 +16,9 @@ Source of truth: `supabase/migrations/` (cloud project only). Commands (root `pa
 | `20261113000002_security.sql` | Helper functions, public views, row-level security, guard and audit triggers |
 | `20261113000003_functions.sql` | Auth hook, new-user trigger, `choose_section`, CR functions, publish / archive, notification recipients, `notify_on_post`, `sync_pull`, `daily_maintenance` |
 | `20261113000004_storage_and_defaults.sql` | Storage buckets and policies, default settings and feature flags, NFE department |
+| `20261115000001_admin_management.sql` | Main-admin-only `invite_admin`, `set_admin_areas`, `revoke_admin`, `cancel_admin_invite`, `transfer_main_admin` (AUTH-4, AUTH-5); `admin_dashboard()` counts for A-0 |
+| `20261115000002_claim_main_admin.sql` | `claim_main_admin()`: the account matching `auth.main_admin_email` takes the main role when none exists (email set after sign-up) |
+| `20261116000001_settings_helpers.sql` | `set_active_semester()` (one active semester, routine area); `app_settings.updated_by` filled by a trigger |
 | `20261114000001_lock_down_functions.sql` | `signup_settings()` (holds the private blocked-email list) no longer callable by anon / signed-in users; trigger functions not callable directly; fixed `search_path` on four functions |
 
 All migrations above are applied to the cloud project. Never edit an applied migration; add a new one.
@@ -72,6 +75,11 @@ The same function runs on the web, the phone, the Home widget and the reminder s
 | `05-cr-exceptions.sql` | CR of A can post a class exception for A (and a notification event is created), not for B; a plain student cannot |
 | `06-cr-apply-limit.sql` | A student of A can apply for B; approval refused at `max_per_section`; works again below the limit |
 | `07-function-privileges.sql` | `signup_settings()` not callable by anon / signed-in users; helper functions have a fixed `search_path` |
+| `09-admin-management.sql` | Invite existing account (granted at once) or new email (applied at first sign-in); area / email validation; area changes and revoke take effect at once; only the main admin manages admins; dashboard counts for admins only; admin changes audited with the actor; handover; `claim_main_admin` |
+| `10-settings.sql` | Settings area changes settings, features and texts (others and students cannot); phones receive changes via `sync_pull`; routine area adds semesters and time slots and switches the active semester (exactly one active); calendar area adds days and ranges per batch |
+| `11-master-data.sql` | Courses, faculty / departments, batches / sections / lab groups and buildings / rooms each writable only by their area; students cannot; one active initial per department; guests never see teacher contacts; contact visibility honoured in `faculty_directory`; only the faculty area uploads to `faculty-photos` |
+| `12-master-import.sql` | `apply_master_import` adds and updates teachers (with new departments) and courses in one step; writes only the values given (null clears); only the admin of that area; a run is applied once; one bad row rolls back the whole import; students cannot; changes appear in the audit log |
+| `08-account-roles.sql` | Main admin by email only while none exists (AUTH-3); faculty email → linked faculty account, students cannot link themselves, users-area admin links / unlinks (AUTH-6); admin-invite and CR-email accounts active at once with auto registration off, others pending (AUTH-8) |
 
 Still to check: importing the Fall 2026 fixture creates 55 sections, 578 `class_slots`, 138 with a lab group — runs once the import exists (`routine-import`, Gate 2).
 

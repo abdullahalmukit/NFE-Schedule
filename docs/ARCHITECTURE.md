@@ -25,7 +25,7 @@ nfe-schedule/
 │  ├─ web/            Next.js (App Router, TypeScript)
 │  │  ├─ app/(student)/        public + student PWA: /, /routine, /academics, /rooms, /menu, /s/[section]
 │  │  ├─ app/admin/            admin panel: /admin/routine, /admin/courses, /admin/faculty, ...
-│  │  ├─ app/api/admin/import/ route handlers: parse, apply (Node runtime)
+│  │  ├─ app/api/admin/import/ route handlers: parse, preview, apply, presets, template (Node runtime)
 │  │  ├─ app/api/admin/routine/publish
 │  │  ├─ app/api/cron/daily    Vercel cron -> rpc daily_maintenance
 │  │  └─ public/sw.js          service worker (app shell + data cache, web push)
@@ -80,6 +80,24 @@ Manual edits (ADM-RT-5) skip steps 1–4: the editor creates a draft version cop
 ### 3.3 Sync — see `docs/SYNC_AND_OFFLINE.md`.
 
 ### 3.4 App updates — see `docs/APP_UPDATES.md`.
+
+### 3.6 Admin panel shell (`apps/web/app/admin/`)
+
+- `layout.tsx` checks the signed-in user's own `admin_permissions` row (`lib/admin.ts`); no areas → "No admin access". The top bar shows only the links for the admin's areas (`adminNav()` in `packages/core/admin/access.ts`); Admins and Audit log only for the main admin. Hiding links is convenience only: every function and table checks the area again in the database.
+- Pages: A-0 dashboard (`admin_dashboard()` counts), A-17 Admins (server actions → `invite_admin` / `set_admin_areas` / `revoke_admin` / `cancel_admin_invite` / `transfer_main_admin`), A-18 Audit log (filters, before / after per field). Sections built by later branches show a "coming" page from `admin/[section]`; a real page at `admin/<section>` replaces it.
+- Settings (A-16) and the calendar (A-12): forms built from `SETTINGS` in `packages/core/settings/schema.ts`; feature flags, text overrides (applied on the web at once, on phones after sync), semesters and time slots (routine area), calendar days (calendar area). The Settings link shows for the settings, routine or calendar area; its side menu lists only the pages the admin may open.
+- Master data (A-6, A-8, A-9): Courses, Faculty (+ Departments tab), Batches with sections and lab groups, Rooms with buildings. Server actions validate with the zod forms in `packages/core/master/forms.ts` and write as the admin (RLS decides); nothing is deleted, only archived. Teacher photos go from the browser straight to the public `faculty-photos` bucket (`<faculty id>.<ext>`, faculty area), then the path is stored. Empty room floors are filled in by `room.floor_rule`.
+- Faculty / course import (A-7): Courses and Faculty have "Import from a file" (→ `/admin/<kind>/import`) and template downloads (CSV, Excel, JSON). The flow is in `MASTER_DATA_IMPORT.md`; readers live in `@nfe/parser/master` (server only), matching and preview in `packages/core/master/import.ts`, the write in the SQL function `apply_master_import` (security invoker, so RLS and the audit triggers apply).
+- Opening the panel (and every sign-in) calls `claim_main_admin()`, so a main admin whose email was set after they signed up gets the role.
+
+### 3.5 Sign-in (AUTH-1…3, AUTH-6, AUTH-8, AUTH-9)
+
+- **Who may register** is decided only on the server: the "Before User Created" hook (`hook_before_user_created`) applies `auth.signup` (restricted domains or any email, blocked emails; invited people always allowed). The apps read the public `auth.signup` setting just to show the right buttons, the domain hint and the admin's rejection message in Bangla or English (`packages/core/settings/auth-signup.ts`).
+- **Web:** "Continue with Google" → `signInWithOAuth` (with Google's `hd` hint when exactly one domain is allowed) → Supabase → `/auth/callback` (code exchange; a refused sign-up comes back as `?error_description=` and is shown on `/sign-in`) → `/auth/next` sends the user by account state. Email code (when `email_otp` is on): `signInWithOtp` + `verifyOtp`.
+- **Phone:** native Google account picker (`@react-native-google-signin/google-signin`, configured with the **Web** client ID) → ID token → `signInWithIdToken`. Needs a development or release build; Expo Go cannot load the native module. On Android no config plugin is needed; for iOS add the plugin with `iosUrlScheme` once an iOS OAuth client exists.
+- **Account state → screen** (`authStage` in `packages/core`): no session → N-1; guest → app with public data only; `pending` → N-17 (re-checks every 30 s and on focus until push arrives); `disabled` → N-17 not-active variant; `active` / `alumni` → app.
+- **Guest mode (AUTH-2):** web cookie `nfe-guest`; phone secure-store key `nfe.guest`. Row-level security, not the UI, limits what guests read.
+- **First sign-in** creates the profile (`handle_new_user`): main admin by `auth.main_admin_email` (AUTH-3), faculty account linked by email (AUTH-6), invited admins / CRs / faculty active at once, everyone else active or pending per `auto_register` (AUTH-8). Language: new profiles get `i18n.default_locale`.
 
 ## 4. Security model
 

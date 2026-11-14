@@ -34,6 +34,11 @@ export function resolveLocale(input: { saved?: unknown; adminDefault?: unknown }
   return DEFAULT_LOCALE;
 }
 
+/** Replaces `{name}` placeholders: fill("Hi {name}", { name: "A" }) → "Hi A". */
+export function fill(text: string, vars: Record<string, string | number>): string {
+  return text.replace(/\{(\w+)\}/g, (m, k: string) => (k in vars ? String(vars[k]) : m));
+}
+
 /** Looks up a string; admin overrides (`i18n_overrides`) win, English is the fallback. */
 export function t(
   locale: Locale,

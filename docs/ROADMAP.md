@@ -18,11 +18,11 @@ Status legend: ☐ to do · ◐ in progress · ☑ done (update this file in the
 
 | Branch | Delivers (requirement IDs) |
 |---|---|
-| ☐ `auth-diu-signin` | AUTH-1…3, AUTH-6; Google sign-in on web and mobile; guest mode; profile bootstrap |
-| ☐ `admin-shell` | Admin layout, area-based navigation, dashboard A-0, admins page A-17 (AUTH-4, AUTH-5), audit log A-18 |
-| ☐ `app-settings` | `packages/core/settings` schemas + defaults, Settings pages A-16, feature flags, i18n overrides, semesters & time slots, week (ADM-SET-1, ADM-SET-2) |
-| ☐ `master-data-manual` | Courses, faculty, departments, batches, rooms pages (ADM-MD-4, ADM-MD-5) |
-| ☐ `master-data-import` | Readers for csv / xlsx / json / docx / doc / pdf, import wizard, presets, templates download (ADM-MD-1…3) |
+| ☑ `auth-diu-signin` | AUTH-1…3, AUTH-6, AUTH-8, AUTH-9; Google sign-in on web and mobile; email code; guest mode; N-1, N-17; profile bootstrap |
+| ☑ `admin-shell` | Admin layout, area-based navigation, dashboard A-0, admins page A-17 (AUTH-4, AUTH-5), audit log A-18 |
+| ☑ `app-settings` | `packages/core/settings` schemas + defaults, Settings pages A-16, feature flags, i18n overrides, semesters & time slots, week (ADM-SET-1, ADM-SET-2) |
+| ☑ `master-data-manual` | Courses, faculty, departments, batches, rooms pages (ADM-MD-4, ADM-MD-5) |
+| ◐ `master-data-import` | Readers for csv / xlsx / json / docx / doc / pdf, import wizard, presets, templates download (ADM-MD-1…3) |
 | ☐ `routine-import` | Upload, parse route, review screen (mockup 8), warnings & overrides, apply to draft (ADM-RT-1, ADM-RT-2, ADM-RT-10, ADM-RT-11) |
 | ☐ `routine-publish` | Diff preview, publish dialog, version history, rollback (ADM-RT-3, ADM-RT-4, ADM-RT-7) |
 | ☐ `routine-editor` | Manual grid editor with drafts, live clash check, silent fix, build from scratch (ADM-RT-5, ADM-RT-6) |
