@@ -44,7 +44,7 @@ Matching is case-insensitive and ignores spaces, dots, underscores and Bangla/En
 | type | — | type, theory/lab, category (values: theory, lab, sessional→lab, practical→lab) |
 | offering_department | — | department, offered by, dept |
 
-Normalisation: initials upper-cased and trimmed; `NI(ITM)` split into initial + department; course codes normalised to `[PREFIX ]dddd-ddd[d]` (a trailing section letter such as `-A` is removed with a warning); emails lower-cased; phone numbers keep digits and a leading `+`; Bangla digits converted.
+Normalisation (`packages/core/src/master/normalize.ts`, also used by the manual forms in Admin → Courses / Faculty / Batches / Rooms): initials upper-cased and trimmed; `NI(ITM)` split into initial + department; course codes normalised to `[PREFIX ]dddd-ddd[d]` (a trailing section letter such as `-A` is removed with a warning); emails lower-cased; phone numbers keep digits and a leading `+`; Bangla digits converted.
 
 ## 3. Readers (`packages/parser/src/master/`)
 
