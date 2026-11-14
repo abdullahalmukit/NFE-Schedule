@@ -19,7 +19,7 @@ import { DEFAULT_ROUTINE_RULES, type RoutineParserRules } from "@nfe/parser";
 import { readAdminAccess } from "./admin";
 import { getAppState, type AppState } from "./app-state";
 import { fail } from "./master-import";
-import { createAdminClient } from "./supabase/admin";
+import { createAdminClient, serviceRoleConfigured } from "./supabase/admin";
 import { createClient } from "./supabase/server";
 
 type Supabase = Awaited<ReturnType<typeof createClient>>;
@@ -39,6 +39,8 @@ export async function routineContext(): Promise<RoutineContext | NextResponse> {
   if (!hasArea(access, "routine")) {
     return fail(403, fill(tr("md.noArea"), { area: tr("admin.area.routine") }));
   }
+  // The review reads private settings and the faculty table with the service role.
+  if (!serviceRoleConfigured()) return fail(500, tr("rti.err.server"));
   return { supabase: await createClient(), userId: state.user.id, tr };
 }
 

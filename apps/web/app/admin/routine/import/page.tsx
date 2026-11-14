@@ -3,6 +3,7 @@ import { fill, hasArea, type MessageKey, type RoutineReview } from "@nfe/core";
 import { Card, cx, Panel, Pill, StatCard, Stepper } from "@nfe/ui/web";
 import { getAdminContext } from "@/lib/admin";
 import { describeIssue, loadRoutineRun, reviewRun, type RoutineRun } from "@/lib/routine-import";
+import { serviceRoleConfigured } from "@/lib/supabase/admin";
 import { createClient } from "@/lib/supabase/server";
 import { DecisionButton } from "./decision-button";
 import { DetailsEditor } from "./details-editor";
@@ -25,6 +26,13 @@ export default async function RoutineImportPage({
         <p className="font-body text-body text-text-muted">
           {fill(tr("md.noArea"), { area: tr("admin.area.routine") })}
         </p>
+      </Card>
+    );
+  }
+  if (!serviceRoleConfigured()) {
+    return (
+      <Card>
+        <p className="font-body text-body text-danger">{tr("rti.err.server")}</p>
       </Card>
     );
   }

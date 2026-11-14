@@ -2,7 +2,7 @@ import { en, hasArea, readRoutineRules, type MessageKey, type RoutineRules } fro
 import { DEFAULT_ROUTINE_RULES } from "@nfe/parser";
 import { Card, Panel } from "@nfe/ui/web";
 import { getAdminContext } from "@/lib/admin";
-import { createAdminClient } from "@/lib/supabase/admin";
+import { createAdminClient, serviceRoleConfigured } from "@/lib/supabase/admin";
 import { RoutineFormatForm } from "./routine-format-form";
 
 const KEYS = Object.keys(en).filter(
@@ -20,6 +20,13 @@ export default async function RoutineFormatPage() {
     return (
       <Card>
         <p className="font-body text-body text-text-muted">{tr("rtf.err.noArea")}</p>
+      </Card>
+    );
+  }
+  if (!serviceRoleConfigured()) {
+    return (
+      <Card>
+        <p className="font-body text-body text-danger">{tr("rti.err.server")}</p>
       </Card>
     );
   }

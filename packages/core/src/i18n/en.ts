@@ -721,6 +721,8 @@ export const en = {
   "rtf.err.days": "Write each day as name = number (0–6).",
   "rtf.err.lineOrder": "Each line kind must appear once.",
   "rtf.err.noArea": "You need the Routine or Settings area to change this.",
+  "rti.err.server":
+    "The server is not fully set up: the Supabase service key (SUPABASE_SERVICE_ROLE_KEY) is missing. Ask the person who runs the app.",
 } as const;
 
 export type MessageKey = keyof typeof en;

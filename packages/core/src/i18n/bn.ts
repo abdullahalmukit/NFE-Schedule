@@ -712,4 +712,6 @@ export const bn: Record<MessageKey, string> = {
   "rtf.err.days": "প্রতিটি দিন নাম = সংখ্যা (0–6) হিসেবে লিখুন।",
   "rtf.err.lineOrder": "প্রতিটি লাইনের ধরন একবারই থাকবে।",
   "rtf.err.noArea": "এটি বদলাতে রুটিন বা সেটিংস অংশের অনুমতি লাগবে।",
+  "rti.err.server":
+    "সার্ভার পুরোপুরি প্রস্তুত নয়: Supabase service key (SUPABASE_SERVICE_ROLE_KEY) নেই। যিনি অ্যাপটি চালান তাঁকে জানান।",
 };

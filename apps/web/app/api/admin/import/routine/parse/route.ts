@@ -69,9 +69,10 @@ export async function POST(request: Request) {
   if (!blob) return fail(404, tr("imp.err.noRun"));
   if (blob.size > MAX_IMPORT_BYTES) return fail(400, tr("imp.upload.tooBig"));
 
+  const rules = await loadRoutineRules();
   let result;
   try {
-    result = parseRoutineDocx(new Uint8Array(await blob.arrayBuffer()), await loadRoutineRules());
+    result = parseRoutineDocx(new Uint8Array(await blob.arrayBuffer()), rules);
   } catch {
     await supabase.from("import_runs").update({ status: "failed" }).eq("id", runId);
     return fail(422, tr("rti.err.notWord"));

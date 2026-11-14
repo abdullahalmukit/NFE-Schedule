@@ -16,3 +16,8 @@ export function createAdminClient() {
     auth: { persistSession: false, autoRefreshToken: false },
   });
 }
+
+/** False when the server has no service key (e.g. a dev machine without it in .env.local). */
+export function serviceRoleConfigured(): boolean {
+  return Boolean(process.env.SUPABASE_SERVICE_ROLE_KEY);
+}
