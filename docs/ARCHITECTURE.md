@@ -25,7 +25,7 @@ nfe-schedule/
 │  ├─ web/            Next.js (App Router, TypeScript)
 │  │  ├─ app/(student)/        public + student PWA: /, /routine, /academics, /rooms, /menu, /s/[section]
 │  │  ├─ app/admin/            admin panel: /admin/routine, /admin/courses, /admin/faculty, ...
-│  │  ├─ app/api/admin/import/ route handlers: parse, apply (Node runtime)
+│  │  ├─ app/api/admin/import/ route handlers: parse, preview, apply, presets, template (Node runtime)
 │  │  ├─ app/api/admin/routine/publish
 │  │  ├─ app/api/cron/daily    Vercel cron -> rpc daily_maintenance
 │  │  └─ public/sw.js          service worker (app shell + data cache, web push)
@@ -87,6 +87,7 @@ Manual edits (ADM-RT-5) skip steps 1–4: the editor creates a draft version cop
 - Pages: A-0 dashboard (`admin_dashboard()` counts), A-17 Admins (server actions → `invite_admin` / `set_admin_areas` / `revoke_admin` / `cancel_admin_invite` / `transfer_main_admin`), A-18 Audit log (filters, before / after per field). Sections built by later branches show a "coming" page from `admin/[section]`; a real page at `admin/<section>` replaces it.
 - Settings (A-16) and the calendar (A-12): forms built from `SETTINGS` in `packages/core/settings/schema.ts`; feature flags, text overrides (applied on the web at once, on phones after sync), semesters and time slots (routine area), calendar days (calendar area). The Settings link shows for the settings, routine or calendar area; its side menu lists only the pages the admin may open.
 - Master data (A-6, A-8, A-9): Courses, Faculty (+ Departments tab), Batches with sections and lab groups, Rooms with buildings. Server actions validate with the zod forms in `packages/core/master/forms.ts` and write as the admin (RLS decides); nothing is deleted, only archived. Teacher photos go from the browser straight to the public `faculty-photos` bucket (`<faculty id>.<ext>`, faculty area), then the path is stored. Empty room floors are filled in by `room.floor_rule`.
+- Faculty / course import (A-7): Courses and Faculty have "Import from a file" (→ `/admin/<kind>/import`) and template downloads (CSV, Excel, JSON). The flow is in `MASTER_DATA_IMPORT.md`; readers live in `@nfe/parser/master` (server only), matching and preview in `packages/core/master/import.ts`, the write in the SQL function `apply_master_import` (security invoker, so RLS and the audit triggers apply).
 - Opening the panel (and every sign-in) calls `claim_main_admin()`, so a main admin whose email was set after they signed up gets the role.
 
 ### 3.5 Sign-in (AUTH-1…3, AUTH-6, AUTH-8, AUTH-9)

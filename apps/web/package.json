@@ -12,6 +12,7 @@
   },
   "dependencies": {
     "@nfe/core": "workspace:^",
+    "@nfe/parser": "workspace:^",
     "@nfe/ui": "workspace:^",
     "@supabase/ssr": "^0.12.7",
     "@supabase/supabase-js": "^2.119.0",

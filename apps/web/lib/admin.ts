@@ -23,20 +23,21 @@ export const getAdminContext = cache(async (): Promise<AdminContext> => {
   const supabase = await createClient();
   // The main admin whose email was set after they signed up claims the role here (AUTH-3).
   await supabase.rpc("claim_main_admin");
+  return { ...state, user: state.user, access: await readAdminAccess(state.user.id) };
+});
+
+/** The user's admin areas, or null when they are not an admin (no redirect; for route handlers). */
+export async function readAdminAccess(userId: string): Promise<AdminAccess | null> {
+  const supabase = await createClient();
   const { data } = await supabase
     .from("admin_permissions")
     .select("is_main, areas, revoked_at")
-    .eq("user_id", state.user.id)
+    .eq("user_id", userId)
     .maybeSingle();
   const access: AdminAccess | null =
     data && !data.revoked_at ? { isMain: data.is_main, areas: data.areas } : null;
-
-  return {
-    ...state,
-    user: state.user,
-    access: isAnyAdmin(access) ? access : null,
-  };
-});
+  return isAnyAdmin(access) ? access : null;
+}
 
 /** Date and time as shown in the admin panel (Dhaka time). */
 export function formatDateTime(value: string | Date, locale: "en" | "bn"): string {
