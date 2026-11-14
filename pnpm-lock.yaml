@@ -186,6 +186,9 @@ importers:
       '@supabase/supabase-js':
         specifier: ^2.119.0
         version: 2.119.0
+      '@types/node':
+        specifier: ^24
+        version: 24.19.2
 
   packages/parser: {}
 

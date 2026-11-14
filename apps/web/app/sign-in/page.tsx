@@ -1,6 +1,6 @@
 import type { Metadata } from "next";
 import { redirect } from "next/navigation";
-import { domainHint, fill, isSignupRefusal, rejectionMessage, t } from "@nfe/core";
+import { domainHint, fill, isSignupRefusal, rejectionMessage } from "@nfe/core";
 import { getAppState, pathForStage } from "@/lib/app-state";
 import { SignInForm } from "./sign-in-form";
 
@@ -12,7 +12,7 @@ export default async function SignInPage({
 }: {
   searchParams: Promise<{ error?: string }>;
 }) {
-  const { stage, locale, signup } = await getAppState();
+  const { stage, locale, signup, overrides, tr } = await getAppState();
   if (stage !== "sign-in" && stage !== "guest") redirect(pathForStage(stage));
 
   const { error } = await searchParams;
@@ -20,7 +20,7 @@ export default async function SignInPage({
   const errorText = error
     ? isSignupRefusal(signup, error)
       ? rejectionMessage(signup, locale)
-      : t(locale, "auth.errorGeneric")
+      : tr("auth.errorGeneric")
     : null;
 
   return (
@@ -29,7 +29,8 @@ export default async function SignInPage({
         locale={locale}
         google={signup.google}
         emailOtp={signup.email_otp}
-        hint={hint ? fill(t(locale, "auth.domainHint"), { domains: hint }) : null}
+        hint={hint ? fill(tr("auth.domainHint"), { domains: hint }) : null}
+        overrides={overrides}
         initialError={errorText}
         refusalMessage={rejectionMessage(signup, locale)}
         refusalMatch={signup.message_en}

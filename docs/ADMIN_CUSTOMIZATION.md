@@ -1,6 +1,6 @@
 # Admin customisation — what is dynamic
 
-Rule for the whole codebase: **if a value could differ between semesters or departments, it comes from the database, not from code.** Code only holds safe defaults (`packages/core/settings/defaults.ts`) used when a value is missing or invalid.
+Rule for the whole codebase: **if a value could differ between semesters or departments, it comes from the database, not from code.** Code only holds safe defaults (`packages/core/src/settings/schema.ts`, read with `readSetting()`) used when a value is missing or invalid.
 
 ## 1. Structured data (own tables, own admin pages)
 
@@ -25,7 +25,7 @@ Rule for the whole codebase: **if a value could differ between semesters or depa
 
 ## 2. Settings keys (`app_settings`, edited in Settings)
 
-Each key has a zod schema in `packages/core/settings/schema.ts`; the settings form is generated from it, so adding a key means adding its schema and default. Defaults are inserted by migration `..._storage_and_defaults.sql`.
+Each key has a zod schema, a default, a visibility and a list of form fields in `SETTINGS` (`packages/core/src/settings/schema.ts`); the admin form (Admin → Settings) is built from those fields and every save is validated with the schema, so adding a key means adding one entry there (plus its texts in `en` / `bn`) and putting it on a page in `SETTINGS_PAGES`. Defaults are inserted by migration `..._storage_and_defaults.sql`; a test checks every seeded value against its schema. `parser.routine` is edited on Settings → Routine format, which arrives with the routine import.
 
 | Key | Shape (default) | Effect |
 |---|---|---|

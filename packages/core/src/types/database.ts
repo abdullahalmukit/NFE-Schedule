@@ -2365,6 +2365,7 @@ export type Database = {
       }
       revoke_admin: { Args: { p_user: string }; Returns: undefined }
       revoke_cr: { Args: { p_assignment: string }; Returns: undefined }
+      set_active_semester: { Args: { p_semester: string }; Returns: undefined }
       set_admin_areas: {
         Args: { p_areas: string[]; p_user: string }
         Returns: undefined

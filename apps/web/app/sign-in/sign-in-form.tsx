@@ -2,7 +2,7 @@
 
 import { useRouter } from "next/navigation";
 import { useState, useTransition } from "react";
-import { fill, t, type Locale } from "@nfe/core";
+import { fill, t, type Locale, type MessageKey } from "@nfe/core";
 import { Button, InfoBanner, Logo, SegmentedControl, TextField } from "@nfe/ui/web";
 import { saveLocale } from "@/lib/locale";
 import { createClient } from "@/lib/supabase/client";
@@ -18,13 +18,15 @@ export interface SignInFormProps {
   /** The admin's rejection message in this language, and the English text the hook sends. */
   refusalMessage: string;
   refusalMatch: string;
+  /** Admin text changes for this language. */
+  overrides: Partial<Record<MessageKey, string>>;
 }
 
 type EmailStep = "closed" | "email" | "code";
 
 export function SignInForm(p: SignInFormProps) {
   const router = useRouter();
-  const tr = (key: Parameters<typeof t>[1]) => t(p.locale, key);
+  const tr = (key: MessageKey) => t(p.locale, key, p.overrides);
   const [error, setError] = useState(p.initialError);
   const [busy, startBusy] = useTransition();
   const [step, setStep] = useState<EmailStep>("closed");

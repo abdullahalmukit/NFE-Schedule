@@ -1,6 +1,6 @@
 import Link from "next/link";
 import { redirect } from "next/navigation";
-import { fill, t } from "@nfe/core";
+import { fill } from "@nfe/core";
 import { Button, Card, InfoBanner, Logo } from "@nfe/ui/web";
 import { getAppState } from "@/lib/app-state";
 import { signOut } from "./actions";
@@ -10,10 +10,9 @@ import { signOut } from "./actions";
  * shows who is looking: guest, pending or signed-in account.
  */
 export default async function HomePage() {
-  const { stage, locale, user } = await getAppState();
+  const { stage, user, tr } = await getAppState();
   if (stage === "sign-in") redirect("/sign-in");
   if (stage === "disabled") redirect("/pending");
-  const tr = (key: Parameters<typeof t>[1]) => t(locale, key);
 
   return (
     <main className="mx-auto flex min-h-screen w-full max-w-[480px] flex-col gap-6 px-5 py-8">

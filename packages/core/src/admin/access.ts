@@ -1,4 +1,5 @@
 import type { MessageKey } from "../i18n/en";
+import { SETTINGS_PAGES } from "../settings/schema";
 
 /** Permission areas the main admin can grant (same list as the database constraint). */
 export const ADMIN_AREAS = [
@@ -40,8 +41,8 @@ export interface AdminNavItem {
   /** Path segment under /admin ("" = dashboard). */
   slug: string;
   label: MessageKey;
-  /** Area needed to see the link; null = any admin. */
-  area: AdminArea | null;
+  /** Area needed to see the link (any one of a list); null = any admin. */
+  area: AdminArea | readonly AdminArea[] | null;
   mainOnly?: boolean;
 }
 
@@ -61,7 +62,8 @@ const MORE_LINKS: AdminNavItem[] = [
   { slug: "users", label: "admin.nav.users", area: "users" },
   { slug: "reports", label: "admin.nav.reports", area: "reports" },
   { slug: "releases", label: "admin.nav.releases", area: "releases" },
-  { slug: "settings", label: "admin.nav.settings", area: "settings" },
+  // Settings holds pages of three areas (A-16 + semesters + calendar).
+  { slug: "settings", label: "admin.nav.settings", area: ["settings", "routine", "calendar"] },
   { slug: "admins", label: "admin.nav.admins", area: null, mainOnly: true },
   { slug: "audit", label: "admin.nav.audit", area: null, mainOnly: true },
 ];
@@ -71,7 +73,9 @@ export const ADMIN_NAV: readonly AdminNavItem[] = [...MAIN_LINKS, ...MORE_LINKS]
 export function canOpen(access: AdminAccess | null, item: AdminNavItem): boolean {
   if (!isAnyAdmin(access)) return false;
   if (item.mainOnly) return Boolean(access?.isMain);
-  return item.area === null || hasArea(access, item.area);
+  if (item.area === null) return true;
+  const areas: readonly AdminArea[] = typeof item.area === "string" ? [item.area] : item.area;
+  return areas.some((a) => hasArea(access, a));
 }
 
 /** Links an admin may see; areas they lack are hidden (UI only — RLS still guards the data). */
@@ -87,4 +91,30 @@ export function adminNav(access: AdminAccess | null): {
 
 export function findAdminNavItem(slug: string): AdminNavItem | undefined {
   return ADMIN_NAV.find((i) => i.slug === slug);
+}
+
+export interface SettingsMenuItem {
+  slug: string;
+  title: MessageKey;
+  area: AdminArea;
+  /** Pages that live outside /admin/settings (the calendar). */
+  href?: string;
+}
+
+/** Side menu of Settings (A-16) and the area each page needs. */
+export const SETTINGS_MENU: readonly SettingsMenuItem[] = [
+  ...SETTINGS_PAGES.map((p) => ({ slug: p.slug, title: p.title, area: "settings" as const })),
+  { slug: "semesters", title: "setp.semesters", area: "routine" },
+  { slug: "calendar", title: "admin.nav.calendar", area: "calendar", href: "/admin/calendar" },
+  { slug: "routine", title: "setp.routine", area: "settings" },
+  { slug: "features", title: "setp.features", area: "settings" },
+  { slug: "texts", title: "setp.texts", area: "settings" },
+];
+
+/** Settings pages this admin may open, with their links. */
+export function settingsMenu(access: AdminAccess | null): (SettingsMenuItem & { href: string })[] {
+  return SETTINGS_MENU.filter((m) => hasArea(access, m.area)).map((m) => ({
+    ...m,
+    href: m.href ?? `/admin/settings/${m.slug}`,
+  }));
 }
