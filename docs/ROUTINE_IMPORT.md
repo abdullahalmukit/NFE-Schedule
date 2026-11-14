@@ -14,7 +14,7 @@
 | faculty | `^(?<initial>[A-Z]{1,6})(?:\s*\((?<dept>[A-Z]{2,6})\))?$` | `DAMR`, `NI(ITM)` |
 | room | `^(?<building>[A-Za-z][A-Za-z0-9-]*)\s*:\s*(?<room>[A-Za-z0-9-]+)$` | `AB-1: 304`, `AB: 101`, `Gym: 407` |
 
-Code: `packages/parser/src/routine/` — `rules.ts` (defaults and types), `parse-routine.ts`, `clashes.ts`, `diff.ts`. Test: `packages/parser/test/routine-fall-2026-v5.test.ts` (run `npx tsx packages/parser/test/routine-fall-2026-v5.test.ts`; move to Vitest when the workspace is set up).
+Code: `packages/parser/src/routine/` — `rules.ts` (defaults and types), `parse-routine.ts`, `clashes.ts`, `diff.ts`. Test: `packages/parser/test/routine-fall-2026-v5.test.ts` (Vitest).
 
 ## 2. Known data in Fall 2026 V5
 
@@ -58,6 +58,17 @@ Resolution against the database (step 2 in `ARCHITECTURE.md` §3.1):
 | Active batch with no table | **Graduating** tag; on confirm: batch `graduated`, its students `alumni` |
 | Building / room not in `rooms` | Created on apply; floor from `room.floor_rule`, type `lab` if only lab cells use it (editable) |
 | Time slots differ from the semester's | Suggestion to update the semester's time slots |
+
+### Review screen as built (`/admin/routine/import`, routine-import)
+
+- **Upload**: semester (active one preselected), version label (unique per semester), .docx. **Read tables** happens at once; the review opens at `?run=<id>` and can be left and continued from the Routine page.
+- **Stats** as mockup 8; **Checks** (teacher / room double-booked, unreadable cells, rooms found).
+- **Faculty initials without details** / **Course codes without titles**: initials without a teacher record or without a name, codes without a course or without a title; *New* marks the ones that do not exist yet. Names, designations, titles and credits typed here are saved to master data at once (faculty / courses area); "Import from a file" opens the faculty / course import. Records still missing are created bare (initial + department, code + detected type) when the draft is saved.
+- **Batches in this file** with *New* and *Graduating*. A graduating batch gets "Mark graduated when published"; the choice is kept in `result.overrides.graduate` and carried out by the publish step (`routine-publish`), never on import.
+- **Warnings**: cross-section lab groups are decided per table (*Keep as written* / *Rename*); other warnings are accepted one by one. **Problems** (errors) must be fixed in the file and uploaded again.
+- **Class times**: created for a semester without times; when they differ, the admin keeps the semester's or takes the file's.
+- **Semester changes** (ADM-RT-10): left teacher appearing again, teacher without classes, guest teacher, new batch, batch without a table. Nothing is applied silently.
+- **Save as draft** is enabled when nothing blocks it (problems, undecided warnings, undecided class times). It writes a draft version (`apply_routine_import`); students see nothing until it is published. A draft can be discarded on the Routine page.
 
 ## 4. Diff and publish
 
