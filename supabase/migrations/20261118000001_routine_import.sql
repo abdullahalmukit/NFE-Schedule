@@ -150,3 +150,21 @@ end $$;
 
 revoke execute on function public.apply_routine_import(uuid, jsonb) from public, anon;
 grant execute on function public.apply_routine_import(uuid, jsonb) to authenticated;
+
+-- Settings → Routine format (ADM-RT-11): routine or settings admins save the file
+-- format rules. The web form validates the value (packages/core routine/parser-rules.ts).
+create or replace function public.set_routine_rules(p_value jsonb) returns void
+language plpgsql security definer set search_path = public as $$
+begin
+  if not (has_admin_area('routine') or has_admin_area('settings')) then
+    raise exception 'Not allowed' using errcode = '42501';
+  end if;
+  if jsonb_typeof(p_value) <> 'object' then raise exception 'Rules must be an object'; end if;
+  update app_settings set value = p_value where key = 'parser.routine';
+  if not found then
+    insert into app_settings (key, value, is_public) values ('parser.routine', p_value, false);
+  end if;
+end $$;
+
+revoke execute on function public.set_routine_rules(jsonb) from public, anon;
+grant execute on function public.set_routine_rules(jsonb) to authenticated;

@@ -2307,6 +2307,10 @@ export type Database = {
         Args: { p_plan: Json; p_run: string }
         Returns: Json
       }
+      apply_routine_import: {
+        Args: { p_plan: Json; p_run: string }
+        Returns: Json
+      }
       archive_superseded_versions: {
         Args: { p_semester: string }
         Returns: undefined
@@ -2374,6 +2378,7 @@ export type Database = {
         Args: { p_areas: string[]; p_user: string }
         Returns: undefined
       }
+      set_routine_rules: { Args: { p_value: Json }; Returns: undefined }
       signup_settings: { Args: never; Returns: Json }
       sync_pull: { Args: { p_since?: number }; Returns: Json }
       teaches_section: { Args: { p_section: string }; Returns: boolean }

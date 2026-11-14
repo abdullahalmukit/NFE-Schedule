@@ -108,3 +108,25 @@ begin
   perform pg_temp.logout();
   perform pg_temp.ok('other admins cannot apply', err like '%Not allowed%', coalesce(err, 'applied'));
 end $$;
+
+-- ADM-RT-11: routine admins save the format rules; students cannot.
+do $$
+declare adm uuid; stu uuid; err text;
+begin
+  adm := pg_temp.new_user('rt.rules@example.test');
+  stu := pg_temp.new_user('rt.rules.student@example.test');
+  insert into admin_permissions (user_id, areas) values (adm, '{routine}');
+  update profiles set status = 'active' where id = stu;
+
+  perform pg_temp.login(adm);
+  perform public.set_routine_rules('{"use_defaults": true, "test": 1}');
+  perform pg_temp.logout();
+  perform pg_temp.ok('a routine admin saves the format rules',
+    (select value ->> 'test' = '1' and updated_by = adm from app_settings where key = 'parser.routine'));
+
+  err := null;
+  perform pg_temp.login(stu);
+  begin perform public.set_routine_rules('{"use_defaults": true}'); exception when others then err := sqlerrm; end;
+  perform pg_temp.logout();
+  perform pg_temp.ok('students cannot change the format rules', err like '%Not allowed%', coalesce(err, 'saved'));
+end $$;
