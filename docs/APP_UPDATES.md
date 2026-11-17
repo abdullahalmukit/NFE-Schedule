@@ -12,6 +12,8 @@ The app is built so most changes are the first kind (see `ADMIN_CUSTOMIZATION.md
 
 ## 1. Over-the-air updates (EAS Update)
 
+> **OTA is built into the APK.** `expo-updates`, the update URL and the channel are fixed when the APK is built and cannot be added to an installed app. An APK built without them never receives OTA updates, and its users must install a new APK by hand. So the first pilot APK must be built from the `preview` profile only after `app-updates` is done.
+
 `apps/mobile/app.config.ts`:
 
 ```ts

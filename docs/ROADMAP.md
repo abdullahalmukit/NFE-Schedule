@@ -56,7 +56,7 @@ Status legend: ☐ to do · ◐ in progress · ☑ done (update this file in the
 
 | Branch | Delivers |
 |---|---|
-| ☐ `pilot-readiness` | Error tracking (Sentry free tier), admin guide and CR guide in `docs/guides/` (Bangla + English), seed of real faculty / course data from the department, preview APK build, Vercel production deploy, daily cron |
+| ☐ `pilot-readiness` | Error tracking (Sentry free tier), admin guide and CR guide in `docs/guides/` (Bangla + English), seed of real faculty / course data from the department, preview APK build, Vercel production deploy, daily cron. **Requires `app-updates` done first: the first APK given to students must include OTA updates** (`APP_UPDATES.md` §1) |
 | ☐ `pilot-fixes-*` | One branch per fix found during the pilot (e.g. `pilot-fixes-room-chip`) |
 
 **Gate 3:** pilot batch confirms reliability (adoption, accuracy, fewer queries, survey — proposal 12.4).
