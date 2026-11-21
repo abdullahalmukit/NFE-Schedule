@@ -3,7 +3,9 @@
 import { revalidatePath } from "next/cache";
 import { redirect } from "next/navigation";
 import { z } from "zod";
+import { fill } from "@nfe/core";
 import { getAdminContext } from "@/lib/admin";
+import { clashReport } from "@/lib/routine-editor";
 import { uuid } from "@/lib/master-data";
 import { versionLabel } from "@/lib/routine-import";
 import { loadVersion } from "@/lib/routine-versions";
@@ -36,6 +38,7 @@ const publishInput = z.object({
   effective_from: z.string().regex(/^\d{4}-\d{2}-\d{2}$/),
   notify: z.boolean(),
   summary: z.string().trim().max(500),
+  anyway: z.boolean(),
   graduate: z.array(z.string().max(10)).max(50),
 });
 
@@ -54,10 +57,11 @@ export async function publishVersion(
     effective_from: form.get("effective_from"),
     notify: form.get("notify") === "on",
     summary: String(form.get("summary") ?? ""),
+    anyway: form.get("anyway") === "on",
     graduate: form.getAll("graduate").map(String),
   });
   if (!parsed.success) return { ok: false, message: tr("rtp.err.input") };
-  const { id, effective_from, notify, summary, graduate } = parsed.data;
+  const { id, effective_from, notify, summary, graduate, anyway } = parsed.data;
   const today = new Date().toISOString().slice(0, 10);
   if (effective_from < today) return { ok: false, message: tr("rtp.err.past") };
 
@@ -65,6 +69,15 @@ export async function publishVersion(
   const version = await loadVersion(supabase, id);
   if (!version || version.status !== "draft") return { ok: false, message: tr("rtp.err.notDraft") };
   const plan = await publishPlan(supabase, version);
+  // Clashes block publishing unless the admin ticks "Publish anyway"; that choice is noted on the version.
+  const clashes = clashReport(plan.after, [], tr).messages.length;
+  if (clashes && !anyway) return { ok: false, message: tr("rte.err.clashes") };
+  if (clashes) {
+    await supabase
+      .from("routine_versions")
+      .update({ notes: fill(tr("rte.publishedWithClashes"), { n: clashes }) })
+      .eq("id", id);
+  }
   const { error } = await supabase.rpc("publish_routine_version", {
     p_version: id,
     p_effective_from: effective_from,

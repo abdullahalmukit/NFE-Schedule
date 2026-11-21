@@ -3,6 +3,7 @@ import { notFound } from "next/navigation";
 import { fill, hasArea, sectionKey } from "@nfe/core";
 import { Card, Panel, StatCard } from "@nfe/ui/web";
 import { getAdminContext } from "@/lib/admin";
+import { clashReport } from "@/lib/routine-editor";
 import { publishPlan } from "@/lib/routine-publish";
 import { loadSlots, loadVersion } from "@/lib/routine-versions";
 import { createClient } from "@/lib/supabase/server";
@@ -52,6 +53,7 @@ export default async function PublishPage({ params }: { params: Promise<{ id: st
     p_sections: plan.sectionIds,
     p_lab_groups: plan.labGroupIds,
   });
+  const clashes = clashReport(plan.after, slots, tr).messages;
   const count = (k: string) => plan.changes.filter((c) => c.kind === k).length;
   const sections = new Set(plan.changes.map((c) => sectionKey((c.after ?? c.before)!))).size;
   const today = new Date().toISOString().slice(0, 10);
@@ -140,6 +142,24 @@ export default async function PublishPage({ params }: { params: Promise<{ id: st
                 className={`h-24 py-2 ${field}`}
               />
             </label>
+            {clashes.length ? (
+              <div className="flex flex-col gap-2 rounded-xl border border-danger p-3">
+                <p className="font-body text-small font-semibold text-danger">
+                  {fill(tr("rte.clashCount"), { n: clashes.length })}
+                </p>
+                <ul className="flex flex-col gap-1">
+                  {clashes.slice(0, 10).map((m) => (
+                    <li key={m} className="font-body text-caption text-danger">
+                      {m}
+                    </li>
+                  ))}
+                </ul>
+                <label className="flex items-center gap-2 font-body text-small text-text">
+                  <input type="checkbox" name="anyway" className="h-4 w-4 accent-accent" />
+                  {tr("rte.publishAnyway")}
+                </label>
+              </div>
+            ) : null}
             {plan.graduate.length ? (
               <fieldset className="flex flex-col gap-1">
                 <legend className="font-body text-caption font-semibold text-text-muted">

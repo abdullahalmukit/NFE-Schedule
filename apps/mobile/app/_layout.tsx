@@ -8,6 +8,9 @@ import { getTheme, resolveThemeName } from "@nfe/ui";
 import { UiProvider } from "@nfe/ui/native";
 import { AuthProvider, useAuth } from "../src/auth/auth-provider";
 import { fontMap } from "../src/fonts";
+// Defines the background sync task at load time (TaskManager needs it before any task runs).
+import "../src/sync/background";
+import { SyncProvider } from "../src/sync/sync-provider";
 
 void SplashScreen.preventAutoHideAsync();
 
@@ -21,7 +24,7 @@ function Gate({ fontsDone, children }: { fontsDone: boolean; children: ReactNode
   if (!done) return null;
   return (
     <UiProvider preference="system" locale={locale}>
-      {children}
+      <SyncProvider>{children}</SyncProvider>
     </UiProvider>
   );
 }

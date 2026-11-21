@@ -4,8 +4,9 @@ import { Card, Panel, Pill } from "@nfe/ui/web";
 import { formatDate, formatDateTime, getAdminContext } from "@/lib/admin";
 import { createClient } from "@/lib/supabase/server";
 import { ActionForm } from "../_components/action-form";
-import { Hidden, inputClass } from "../_components/fields";
+import { Hidden, inputClass, SelectField, TextField } from "../_components/fields";
 import { discardDraft, restoreVersion } from "./actions";
+import { startEditing, startFromScratch } from "./editor-actions";
 
 const STATUS_TONE = { draft: "warning", published: "accent", archived: "neutral" } as const;
 
@@ -29,7 +30,7 @@ export default async function RoutineHomePage() {
       .is("deleted_at", null)
       .order("created_at", { ascending: false })
       .limit(50),
-    supabase.from("semesters").select("id, name").is("deleted_at", null),
+    supabase.from("semesters").select("id, name, is_active").is("deleted_at", null),
     supabase
       .from("import_runs")
       .select("id, file_name, version_label, created_at")
@@ -41,6 +42,7 @@ export default async function RoutineHomePage() {
   const semesterName = (id: string) => semesters?.find((s) => s.id === id)?.name ?? "";
   const labels = (semesterId: string) =>
     (versions ?? []).filter((v) => v.semester_id === semesterId).map((v) => v.label);
+  const activeSemester = semesters?.find((s) => s.is_active) ?? null;
   const hasDraft = (semesterId: string) =>
     (versions ?? []).some((v) => v.semester_id === semesterId && v.status === "draft");
 
@@ -48,13 +50,60 @@ export default async function RoutineHomePage() {
     <div className="flex flex-col gap-6">
       <div className="flex flex-wrap items-center justify-between gap-4">
         <h1 className="font-display text-display font-bold">{tr("admin.nav.routine")}</h1>
-        <Link
-          href="/admin/routine/import"
-          className="inline-flex h-10 items-center rounded-button bg-accent px-4 font-body text-small font-semibold text-on-accent hover:opacity-90"
-        >
-          {tr("rth.upload")}
-        </Link>
+        <div className="flex flex-wrap items-center gap-3">
+          <Link
+            href="/admin/routine/views"
+            className="font-body text-small font-semibold text-accent hover:underline"
+          >
+            {tr("rvw.title")}
+          </Link>
+          <Link
+            href="/admin/routine/exceptions"
+            className="font-body text-small font-semibold text-accent hover:underline"
+          >
+            {tr("rex.title")}
+          </Link>
+          {activeSemester ? (
+            <ActionForm
+              action={startEditing}
+              submitLabel={tr("rte.editCurrent")}
+              variant="secondary"
+            >
+              <Hidden name="semester_id" value={activeSemester.id} />
+            </ActionForm>
+          ) : null}
+          <Link
+            href="/admin/routine/import"
+            className="inline-flex h-10 items-center rounded-button bg-accent px-4 font-body text-small font-semibold text-on-accent hover:opacity-90"
+          >
+            {tr("rth.upload")}
+          </Link>
+        </div>
       </div>
+
+      {semesters?.length ? (
+        <details className="rounded-card bg-surface p-5 shadow-card">
+          <summary className="cursor-pointer font-display text-heading font-bold text-text">
+            {tr("rte.scratch")}
+          </summary>
+          <p className="mt-1 font-body text-small text-text-muted">{tr("rte.scratchHelp")}</p>
+          <ActionForm
+            action={startFromScratch}
+            submitLabel={tr("rte.scratchButton")}
+            className="mt-4 max-w-md"
+          >
+            <div className="grid grid-cols-2 gap-3">
+              <SelectField
+                name="semester_id"
+                label={tr("rti.semester")}
+                defaultValue={activeSemester?.id}
+                options={semesters.map((s) => ({ value: s.id, label: s.name }))}
+              />
+              <TextField name="label" label={tr("rti.label")} placeholder="1" required />
+            </div>
+          </ActionForm>
+        </details>
+      ) : null}
 
       {pending?.length ? (
         <Panel title={tr("rth.pending")}>

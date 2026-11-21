@@ -12,7 +12,7 @@ The phone app never renders from the network. Every screen reads the local SQLit
 
 ## 3. Phone side (`apps/mobile/src/sync`)
 
-Local database: `expo-sqlite` with Drizzle ORM; schema mirrors the synced tables (same column names, JSON columns stored as text). Local-only tables:
+Local database: `expo-sqlite`. Every synced row is stored as JSON in one `rows` table keyed by (server table, row key) — no ORM and no local migrations when the server adds a column; screens load the tables they need (`useTables`) and compute with the shared `@nfe/core` functions (the whole data set is a few thousand rows). The engine itself (`syncOnce`, `createSyncRunner`, `splitPull`, `freshness`) is in `packages/core/src/sync/engine.ts` with tests; `apps/mobile/src/sync/` only adds the SQLite store, the Supabase remote, the outbox writer, triggers and the label. Local-only tables:
 
 | Table | Purpose |
 |---|---|

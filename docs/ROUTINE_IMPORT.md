@@ -91,6 +91,14 @@ As built (`routine-publish`):
 - Rollback: Version history → pick a version → "Restore" creates a new draft copied from it (`source = rollback`) and opens the publish dialog.
 - Admin can also add sections / lab groups here and edit the semester's time slots (warning if classes use a slot being removed).
 
+### As built (`routine-editor`)
+
+- **Edit current routine** (Routine page) opens the active semester's draft, or copies the version in effect to a new draft (`copy_version_to_draft(…, 'manual')`, label "7" → "7.1"). **Build a routine without a file** starts an empty draft (`create_empty_draft`, ADM-RT-6). A draft from an import is edited the same way ("Edit" on its version page).
+- Editor `/admin/routine/versions/<id>/edit`: batch tabs, section chips, days × slots grid. "+" in a cell opens the class form (course, section letter, lab group or whole section, teacher, room with "busy: 263-B" for that time, slots, note); a class opens the same form to edit or remove it; dragging a class to another cell moves it. Removing sets `deleted_at`.
+- Clashes of the whole draft are worked out on every change (`detectClashes`; classes without a teacher or room are not compared on them) and shown as red cards, red section chips and a list ("DAMR has two classes on Monday 11:20: 263-B …, 263-C …"). The publish page shows them too and needs "Publish anyway", which is written to the version's notes.
+- Sections and lab groups are added and renamed from the editor through `ensure_section`, `ensure_lab_group` and `rename_section_or_group` (routine area; the batch is created when new). Renaming keeps students in it.
+- Only drafts change: the `guard_class_slot_edit` trigger refuses any insert, update or delete on classes of a published or archived version. Semester time slots are still edited on Settings → Semesters.
+
 ## 6. Format rules editable by the admin (ADM-RT-11)
 
 `app_settings.parser.routine` holds either `{"use_defaults": true}` or a full `RoutineParserRules` object (see `rules.ts`): patterns for title, course, faculty, room and time header, the afternoon cut-off hour, day names (English and Bangla can both be listed) and line order. The settings page shows each pattern with plain-language help and a **Test** button that parses an uploaded sample with the edited rules and shows stats and the first errors, without saving anything.

@@ -56,8 +56,10 @@ export function detectClashes<T extends ClashInput>(classes: T[]): Clash<T>[] {
 
   for (const c of classes) {
     for (const s of slotsOf(c)) {
-      add("teacher", `${c.facultyInitial}(${c.facultyDept ?? ""})`, c.day, s, c);
-      add("room", `${c.building}:${c.room}`, c.day, s, c);
+      // A class without a teacher or room yet (manual editor) cannot clash on it.
+      if (c.facultyInitial)
+        add("teacher", `${c.facultyInitial}(${c.facultyDept ?? ""})`, c.day, s, c);
+      if (c.room) add("room", `${c.building}:${c.room}`, c.day, s, c);
       add("section", `${c.batch}-${c.section}`, c.day, s, c);
     }
   }

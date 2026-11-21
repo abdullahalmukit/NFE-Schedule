@@ -24,9 +24,9 @@ Status legend: ☐ to do · ◐ in progress · ☑ done (update this file in the
 | ☑ `master-data-manual` | Courses, faculty, departments, batches, rooms pages (ADM-MD-4, ADM-MD-5) |
 | ☑ `master-data-import` | Readers for csv / xlsx / json / docx / doc / pdf, import wizard, presets, templates download (ADM-MD-1…3) |
 | ☑ `routine-import` | Upload, parse route, review screen (mockup 8), warnings & overrides, apply to draft (ADM-RT-1, ADM-RT-2, ADM-RT-10, ADM-RT-11) |
-| ◐ `routine-publish` | Diff preview, publish dialog, version history, rollback (ADM-RT-3, ADM-RT-4, ADM-RT-7) |
-| ☐ `routine-editor` | Manual grid editor with drafts, live clash check, silent fix, build from scratch (ADM-RT-5, ADM-RT-6) |
-| ☐ `admin-views` | Teacher / room views, load, free rooms (ADM-RT-8), admin exceptions (ADM-RT-9) |
+| ☑ `routine-publish` | Diff preview, publish dialog, version history, rollback (ADM-RT-3, ADM-RT-4, ADM-RT-7) |
+| ☑ `routine-editor` | Manual grid editor with drafts, live clash check, silent fix, build from scratch (ADM-RT-5, ADM-RT-6) |
+| ☑ `admin-views` | Teacher / room views, load, free rooms (ADM-RT-8), admin exceptions (ADM-RT-9) |
 
 **Gate 2:** importing `fixtures/routine-fall-2026-v5.docx` through the admin panel reproduces the file exactly (578 classes; spot-check 10 cells against the Word file) and publishing works end to end.
 
@@ -34,8 +34,8 @@ Status legend: ☐ to do · ◐ in progress · ☑ done (update this file in the
 
 | Branch | Delivers |
 |---|---|
-| ☐ `routine-core` | `packages/core` routine computation, version in effect, course colours, time formatting, Bangla digits — with tests from the fixture |
-| ☐ `offline-sync` | Mobile SQLite schema, sync engine, outbox, triggers, freshness label (SYNC-1…4) |
+| ☑ `routine-core` | `packages/core` routine computation, version in effect, course colours, time formatting, Bangla digits — with tests from the fixture |
+| ◐ `offline-sync` | Mobile SQLite schema, sync engine, outbox, triggers, freshness label (SYNC-1…4) |
 | ☐ `student-onboarding` | N-1, screen 1, section change (ONB-1…3) |
 | ☐ `student-home` | Screen 2 (HOME-1) |
 | ☐ `student-routine` | Screens 3, N-2, N-3, N-4, N-16 (RT-2…8, RT-10, RT-11) |
