@@ -22,3 +22,6 @@ export * from "./routine/versions";
 export * from "./routine/editor";
 export * from "./routine/views";
 export * from "./routine/exceptions";
+export * from "./format/time";
+export * from "./format/course-color";
+export * from "./routine/compute";
