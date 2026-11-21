@@ -20,3 +20,5 @@ export * from "./routine/import-review";
 export * from "./routine/parser-rules";
 export * from "./routine/versions";
 export * from "./routine/editor";
+export * from "./routine/views";
+export * from "./routine/exceptions";

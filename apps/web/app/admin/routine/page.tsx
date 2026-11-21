@@ -51,6 +51,18 @@ export default async function RoutineHomePage() {
       <div className="flex flex-wrap items-center justify-between gap-4">
         <h1 className="font-display text-display font-bold">{tr("admin.nav.routine")}</h1>
         <div className="flex flex-wrap items-center gap-3">
+          <Link
+            href="/admin/routine/views"
+            className="font-body text-small font-semibold text-accent hover:underline"
+          >
+            {tr("rvw.title")}
+          </Link>
+          <Link
+            href="/admin/routine/exceptions"
+            className="font-body text-small font-semibold text-accent hover:underline"
+          >
+            {tr("rex.title")}
+          </Link>
           {activeSemester ? (
             <ActionForm
               action={startEditing}
