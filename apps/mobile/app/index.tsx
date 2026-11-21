@@ -1,9 +1,12 @@
 import { Link, Redirect } from "expo-router";
-import { ScrollView, View } from "react-native";
+import { RefreshControl, ScrollView, View } from "react-native";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 import { fill, t, type MessageKey } from "@nfe/core";
 import { Button, Card, InfoBanner, Logo, Text, useTheme } from "@nfe/ui/native";
 import { useAuth } from "../src/auth/auth-provider";
+import { FreshnessLabel } from "../src/sync/freshness-label";
+import { useSync } from "../src/sync/sync-provider";
+import { useTables } from "../src/sync/use-tables";
 
 /**
  * Home. Until the routine screens arrive (student-home, student-routine) it
@@ -13,6 +16,8 @@ export default function HomeScreen() {
   const auth = useAuth();
   const theme = useTheme();
   const insets = useSafeAreaInsets();
+  const sync = useSync();
+  const local = useTables(["class_slots"]);
 
   if (auth.stage === "sign-in") return <Redirect href="/sign-in" />;
   if (auth.stage === "disabled") return <Redirect href="/pending" />;
@@ -22,6 +27,13 @@ export default function HomeScreen() {
 
   return (
     <ScrollView
+      refreshControl={
+        <RefreshControl
+          refreshing={sync.syncing}
+          onRefresh={() => void sync.refresh()}
+          tintColor={theme.color.accent}
+        />
+      }
       style={{ backgroundColor: theme.color.bg }}
       contentContainerStyle={{
         flexGrow: 1,
@@ -52,6 +64,14 @@ export default function HomeScreen() {
 
       <Card>
         <Text color="textMuted">{tr("home.routineSoon")}</Text>
+        <View style={{ marginTop: 8, gap: 2 }}>
+          <FreshnessLabel />
+          {local ? (
+            <Text variant="caption" color="textMuted">
+              {fill(tr("sync.localCount"), { n: local.class_slots.length })}
+            </Text>
+          ) : null}
+        </View>
       </Card>
 
       {auth.stage === "guest" ? (

@@ -872,4 +872,11 @@ export const bn: Record<MessageKey, string> = {
   "fmt.duration.hm": "{h} ঘণ্টা {m} মিনিট",
   "fmt.duration.h": "{h} ঘণ্টা",
   "fmt.duration.m": "{m} মিনিট",
+  "sync.never": "এখনো ডাউনলোড হয়নি। একবার ইন্টারনেটে যুক্ত হোন।",
+  "sync.justNow": "এইমাত্র হালনাগাদ হয়েছে",
+  "sync.updated": "{n} মিনিট আগে হালনাগাদ",
+  "sync.offline": "অফলাইন · {time}-এর তথ্য দেখাচ্ছে",
+  "sync.needsInternet": "ইন্টারনেট লাগবে",
+  "sync.rejected": "কিছু পরিবর্তন সংরক্ষণ করা যায়নি, তাই ফিরিয়ে নেওয়া হয়েছে।",
+  "sync.localCount": "এই ফোনে {n}টি ক্লাস সংরক্ষিত",
 };

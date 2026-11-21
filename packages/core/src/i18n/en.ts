@@ -882,6 +882,13 @@ export const en = {
   "fmt.duration.hm": "{h} h {m} min",
   "fmt.duration.h": "{h} h",
   "fmt.duration.m": "{m} min",
+  "sync.never": "Not downloaded yet. Connect to the internet once.",
+  "sync.justNow": "Updated just now",
+  "sync.updated": "Updated {n} min ago",
+  "sync.offline": "Offline · showing data from {time}",
+  "sync.needsInternet": "Needs internet",
+  "sync.rejected": "Some changes could not be saved and were undone.",
+  "sync.localCount": "{n} classes saved on this phone",
 } as const;
 
 export type MessageKey = keyof typeof en;
