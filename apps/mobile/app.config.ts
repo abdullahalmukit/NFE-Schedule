@@ -26,6 +26,10 @@ const config: ExpoConfig = {
     "expo-font",
     "expo-secure-store",
     "expo-system-ui",
+    // Local database and background sync (offline-sync, SYNC-1 / SYNC-2).
+    "expo-sqlite",
+    "expo-task-manager",
+    "expo-background-task",
     [
       "expo-splash-screen",
       {
