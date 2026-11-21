@@ -19,3 +19,4 @@ export * from "./master/import";
 export * from "./routine/import-review";
 export * from "./routine/parser-rules";
 export * from "./routine/versions";
+export * from "./routine/editor";

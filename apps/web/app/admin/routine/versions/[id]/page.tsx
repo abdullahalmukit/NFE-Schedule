@@ -77,12 +77,20 @@ export default async function VersionPage({
           </p>
         </div>
         {version.status === "draft" ? (
-          <Link
-            href={`${base}/publish`}
-            className="inline-flex h-10 items-center rounded-button bg-accent px-4 font-body text-small font-semibold text-on-accent hover:opacity-90"
-          >
-            {tr("rtv.preview")}
-          </Link>
+          <div className="flex flex-wrap gap-3">
+            <Link
+              href={`${base}/edit?batch=${batch}&section=${section}`}
+              className="inline-flex h-10 items-center rounded-button border border-border px-4 font-body text-small font-semibold text-text hover:bg-surface-raised"
+            >
+              {tr("rte.edit")}
+            </Link>
+            <Link
+              href={`${base}/publish`}
+              className="inline-flex h-10 items-center rounded-button bg-accent px-4 font-body text-small font-semibold text-on-accent hover:opacity-90"
+            >
+              {tr("rtv.preview")}
+            </Link>
+          </div>
         ) : null}
       </div>
 
