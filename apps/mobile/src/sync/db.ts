@@ -88,3 +88,20 @@ export async function loadTable<T = Record<string, unknown>>(table: string): Pro
   ).getAllAsync<{ data: string }>("select data from rows where tbl = ?", [table]);
   return rows.map((r) => JSON.parse(r.data) as T);
 }
+
+/**
+ * Another account (or a guest) on this phone: forget the previous owner's
+ * rows and unsent writes, so personal data never shows for someone else.
+ * Returns true when the data was cleared.
+ */
+export async function switchOwner(owner: string): Promise<boolean> {
+  const previous = await kvGet("owner");
+  if (previous === owner) return false;
+  const d = await db();
+  if (previous !== null) {
+    await resetData(d);
+    await d.runAsync("delete from outbox");
+  }
+  await kvSet("owner", owner);
+  return previous !== null;
+}

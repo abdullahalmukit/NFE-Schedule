@@ -14,10 +14,11 @@ import {
   type ReactNode,
 } from "react";
 import { AppState } from "react-native";
-import { freshness, type Freshness, type SyncOutcome } from "@nfe/core";
+import { freshness, SYNC_TABLES, type Freshness, type SyncOutcome } from "@nfe/core";
 import { useAuth } from "../auth/auth-provider";
 import { registerBackgroundSync } from "./background";
-import { onChange } from "./events";
+import { switchOwner } from "./db";
+import { emitChange, onChange } from "./events";
 import { onSyncDone, resyncIfSchemaChanged, runSync } from "./runner";
 import { sqliteStore } from "./store";
 
@@ -34,7 +35,8 @@ interface SyncContextValue {
 const SyncContext = createContext<SyncContextValue | null>(null);
 
 export function SyncProvider({ children }: { children: ReactNode }) {
-  const { stage } = useAuth();
+  const { stage, session } = useAuth();
+  const owner = session?.user.id ?? "guest";
   const [fresh, setFresh] = useState<Freshness>({ kind: "never" });
   const [online, setOnline] = useState(true);
   const [syncing, setSyncing] = useState(false);
@@ -59,11 +61,16 @@ export function SyncProvider({ children }: { children: ReactNode }) {
     [updateFreshness],
   );
 
-  // A new session (sign-in, sign-out, guest) can see different rows: sync again.
+  // A new session (sign-in, sign-out, guest) can see different rows: sync again,
+  // after clearing the previous account's data if the account changed.
   useEffect(() => {
-    void updateFreshness();
-    void run("start").then(() => registerBackgroundSync());
-  }, [stage, run, updateFreshness]);
+    void (async () => {
+      if (await switchOwner(owner)) emitChange([...SYNC_TABLES]);
+      await updateFreshness();
+      await run("start");
+      await registerBackgroundSync();
+    })();
+  }, [owner, stage, run, updateFreshness]);
 
   useEffect(() => {
     const app = AppState.addEventListener("change", (s) => {
