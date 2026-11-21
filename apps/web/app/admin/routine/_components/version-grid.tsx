@@ -11,6 +11,7 @@ export function VersionGrid({
   slots,
   days,
   home,
+  detail = "teacher",
   tr,
 }: {
   classes: VersionClass[];
@@ -19,6 +20,8 @@ export function VersionGrid({
   days: number[];
   /** Home department code; other departments are shown as INITIAL(DEPT). */
   home: string | null;
+  /** Second line of a card: the teacher (section view) or the section (teacher / room views). */
+  detail?: "teacher" | "section";
   tr: AppState["tr"];
 }) {
   return (
@@ -61,9 +64,11 @@ export function VersionGrid({
                             <p className="truncate text-caption text-text-muted">{c.courseTitle}</p>
                           ) : null}
                           <p className="text-caption text-text" title={c.facultyName ?? undefined}>
-                            {c.facultyDept && c.facultyDept !== home
-                              ? `${c.facultyInitial}(${c.facultyDept})`
-                              : c.facultyInitial}{" "}
+                            {detail === "section"
+                              ? `${c.batch}-${c.section}`
+                              : c.facultyDept && c.facultyDept !== home
+                                ? `${c.facultyInitial}(${c.facultyDept})`
+                                : c.facultyInitial}{" "}
                             · {c.building}: {c.room}
                           </p>
                         </div>

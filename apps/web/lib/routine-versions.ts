@@ -41,12 +41,13 @@ export async function loadVersion(supabase: Supabase, id: string): Promise<Versi
   return data;
 }
 
-/** The published version in effect today for a semester (same rule as `version_in_effect`). */
+/** The published version in effect on a date (default today) for a semester (same rule as `version_in_effect`). */
 export async function versionInEffect(
   supabase: Supabase,
   semesterId: string,
+  date: string = new Date().toISOString().slice(0, 10),
 ): Promise<VersionRow | null> {
-  const today = new Date().toISOString().slice(0, 10);
+  const today = date;
   const { data } = await supabase
     .from("routine_versions")
     .select(VERSION_COLUMNS)
