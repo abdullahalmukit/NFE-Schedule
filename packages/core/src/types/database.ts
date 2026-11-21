@@ -2344,8 +2344,14 @@ export type Database = {
         Returns: string
       }
       daily_maintenance: { Args: never; Returns: string }
-      ensure_lab_group: { Args: { p_name: string; p_section: string }; Returns: string }
-      ensure_section: { Args: { p_batch: string; p_section: string }; Returns: string }
+      ensure_lab_group: {
+        Args: { p_name: string; p_section: string }
+        Returns: string
+      }
+      ensure_section: {
+        Args: { p_batch: string; p_section: string }
+        Returns: string
+      }
       event_recipients: { Args: { p_event: string }; Returns: string[] }
       has_admin_area: { Args: { area: string }; Returns: boolean }
       hook_before_user_created: { Args: { event: Json }; Returns: Json }
