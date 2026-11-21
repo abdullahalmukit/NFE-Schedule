@@ -20,6 +20,7 @@ export interface VersionRow {
 }
 
 export interface Slot {
+  id: string;
   position: number;
   start: string;
   end: string;
@@ -63,27 +64,40 @@ export async function versionInEffect(
 export async function loadSlots(supabase: Supabase, semesterId: string): Promise<Slot[]> {
   const { data } = await supabase
     .from("time_slots")
-    .select("position, start_time, end_time")
+    .select("id, position, start_time, end_time")
     .eq("semester_id", semesterId)
     .is("deleted_at", null)
     .order("position");
   return (data ?? []).map((s) => ({
+    id: s.id,
     position: s.position,
     start: s.start_time.slice(0, 5),
     end: s.end_time.slice(0, 5),
   }));
 }
 
+/** Ids behind a class, for the editor's forms. */
+export interface ClassIds {
+  sectionId: string;
+  labGroupId: string | null;
+  courseId: string;
+  facultyId: string | null;
+  roomId: string | null;
+  timeSlotId: string;
+}
+
+export type LoadedClass = VersionClass & ClassIds;
+
 /** Every class of a version with codes and names, ready for the grid and the diff. */
 export async function loadVersionClasses(
   supabase: Supabase,
   versionId: string,
-): Promise<VersionClass[]> {
+): Promise<LoadedClass[]> {
   const [{ data: slots }, { data: faculty }] = await Promise.all([
     supabase
       .from("class_slots")
       .select(
-        "id, day, span, note, section_label, faculty_id, sections(name, batches(code)), lab_groups(name), courses(code, title), rooms(number, buildings(code)), time_slots(position)",
+        "id, day, span, note, section_label, section_id, lab_group_id, course_id, faculty_id, room_id, time_slot_id, sections(name, batches(code)), lab_groups(name), courses(code, title), rooms(number, buildings(code)), time_slots(position)",
       )
       .eq("version_id", versionId)
       .is("deleted_at", null)
@@ -110,6 +124,12 @@ export async function loadVersionClasses(
       slot: s.time_slots?.position ?? 0,
       span: s.span,
       note: s.note,
+      sectionId: s.section_id,
+      labGroupId: s.lab_group_id,
+      courseId: s.course_id,
+      facultyId: s.faculty_id,
+      roomId: s.room_id,
+      timeSlotId: s.time_slot_id,
     };
   });
 }

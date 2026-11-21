@@ -2339,7 +2339,13 @@ export type Database = {
         Args: { p_lab_groups: string[]; p_sections: string[] }
         Returns: number
       }
+      create_empty_draft: {
+        Args: { p_label: string; p_semester: string }
+        Returns: string
+      }
       daily_maintenance: { Args: never; Returns: string }
+      ensure_lab_group: { Args: { p_name: string; p_section: string }; Returns: string }
+      ensure_section: { Args: { p_batch: string; p_section: string }; Returns: string }
       event_recipients: { Args: { p_event: string }; Returns: string[] }
       has_admin_area: { Args: { area: string }; Returns: boolean }
       hook_before_user_created: { Args: { event: Json }; Returns: Json }
@@ -2374,6 +2380,10 @@ export type Database = {
           p_summary?: string
           p_version: string
         }
+        Returns: undefined
+      }
+      rename_section_or_group: {
+        Args: { p_id: string; p_kind: string; p_name: string }
         Returns: undefined
       }
       review_cr_request: {
