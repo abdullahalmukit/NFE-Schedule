@@ -56,6 +56,8 @@ routineFor(date):
   sort by start time; insert free-time gaps between classes
 ```
 
+As built (`routine-core`): `routineFor(data, student, date)` returns `{versionId, off, entries, movedAway, hiddenLabSessions}`. Entries carry a status: `normal`, `cancelled` (still listed), `room_changed` (room replaced), `moved_here` (rescheduled to this date or time), `makeup`; classes rescheduled to another date are left out of the list and reported in `movedAway` with their new date and time. `special` calendar days keep classes; `holiday`, `no_class` and `exam_week` show none. `weekRoutine` gives seven days, `freeGaps` the free time between classes that take place, `versionInEffectFor` and `calendarDayFor` the rules above. Formatting lives in `packages/core/src/format/`: `formatTime` / `formatRange` ("13:10" → "01:10" as in the file, or 24 h), `formatDuration`, `toBanglaDigits` / `localDigits`, and `courseColorIndex` (FNV-1a of the code → 0–7 for `courseTone`).
+
 The same function runs on the web, the phone, the Home widget and the reminder scheduler. It has unit tests built from the Fall 2026 fixture (e.g. 263-A Lab A1 on a Wednesday = 0531-1104 A1 at 08:20 and 0511-1105 at 14:40, with A2's 09:50 session hidden — mockup 3).
 
 ## 3. Version in effect

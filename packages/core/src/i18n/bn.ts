@@ -869,4 +869,7 @@ export const bn: Record<MessageKey, string> = {
   "rex.err.newTime": "নতুন তারিখ ও সময় বেছে নিন।",
   "rex.err.room": "নতুন রুম বেছে নিন।",
   "rex.err.weekday": "এই ক্লাস ওই দিনে হয় না।",
+  "fmt.duration.hm": "{h} ঘণ্টা {m} মিনিট",
+  "fmt.duration.h": "{h} ঘণ্টা",
+  "fmt.duration.m": "{m} মিনিট",
 };

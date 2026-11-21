@@ -879,6 +879,9 @@ export const en = {
   "rex.err.newTime": "Choose the new date and time.",
   "rex.err.room": "Choose the new room.",
   "rex.err.weekday": "This class does not meet on that day.",
+  "fmt.duration.hm": "{h} h {m} min",
+  "fmt.duration.h": "{h} h",
+  "fmt.duration.m": "{m} min",
 } as const;
 
 export type MessageKey = keyof typeof en;

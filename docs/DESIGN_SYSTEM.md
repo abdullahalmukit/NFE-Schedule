@@ -64,7 +64,7 @@ Radius: chips 10, buttons 16, cards 20, sheets 28, pills full. Screen padding 20
 
 ## 6. Course colours
 
-`coursePalette` (8 colours per theme). Colour index = stable hash of the course code (`packages/core/format/courseColor.ts`), so a course has the same colour on every screen and every device. Admin can override per course later if needed.
+`coursePalette` (8 colours per theme). Colour index = stable hash of the course code (`courseColorIndex` in `packages/core/src/format/course-color.ts`), so a course has the same colour on every screen and every device. Admin can override per course later if needed.
 
 ## 7. Motion and feedback
 
