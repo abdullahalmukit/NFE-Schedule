@@ -35,7 +35,7 @@ Status legend: ☐ to do · ◐ in progress · ☑ done (update this file in the
 | Branch | Delivers |
 |---|---|
 | ☑ `routine-core` | `packages/core` routine computation, version in effect, course colours, time formatting, Bangla digits — with tests from the fixture |
-| ☐ `offline-sync` | Mobile SQLite schema, sync engine, outbox, triggers, freshness label (SYNC-1…4) |
+| ◐ `offline-sync` | Mobile SQLite schema, sync engine, outbox, triggers, freshness label (SYNC-1…4) |
 | ☐ `student-onboarding` | N-1, screen 1, section change (ONB-1…3) |
 | ☐ `student-home` | Screen 2 (HOME-1) |
 | ☐ `student-routine` | Screens 3, N-2, N-3, N-4, N-16 (RT-2…8, RT-10, RT-11) |
